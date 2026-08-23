@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Global Gym Ghatkopar | Seriously Fun Fitness',
+  title: 'Global Gym Ghatkopar',
   description: 'High-energy strength training, group classes, coaching, and recovery in Ghatkopar, Mumbai.',
   generator: 'v0.app',
 }
