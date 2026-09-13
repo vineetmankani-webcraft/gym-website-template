@@ -1,0 +1,33 @@
+{
+  "gym": {
+    "name": "Global Gymm",
+    "tagline": "Seriously fun fitness for Ghatkopar. Come for the workout, stay for the crew.",
+    "location": "Ghatkopar, Mumbai",
+    "address": {
+      "street": "2nd Floor, R City Mall Road",
+      "area": "Ghatkopar West",
+      "city": "Mumbai",
+      "postcode": "400086",
+      "formatted": "2nd Floor, R City Mall Road, Ghatkopar West, Mumbai 400086"
+    },
+    "contact": {
+      "whatsapp": "+919876543210",
+      "phone": "+919876543210",
+      "email": "hello@globalgym.com"
+    },
+    "social": {
+      "instagram": "https://instagram.com/globalgym",
+      "youtube": "https://youtube.com/globalgym",
+      "whatsapp": "https://wa.me/919876543210"
+    },
+    "maps": {
+      "googleMapsShareLink": "https://maps.app.goo.gl/RCity-Ghatkopar",
+      "embedCode": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.8202305747937!2d72.92279!3d19.122833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c7c7c7c7c7c7%3A0x123456789!2sR%20City%20Mall%20Ghatkopar!5e0!3m2!1sen!2sin!4v123456"
+    },
+    "bookTrial": {
+      "message": "Hi! I'd like to book a free trial class.",
+      "whatsappLink": "https://wa.me/919876543210?text=Hi!%20I'd%20like%20to%20book%20a%20free%20trial%20class."
+    },
+    "copyright": "© 2026 Global Gym Ghatkopar. All rights reserved."
+  }
+}

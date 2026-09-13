@@ -34,7 +34,7 @@
 @layer components {
   .font-heading { font-family: 'Oswald', Impact, sans-serif; }
   .eyebrow { @apply font-mono text-xs font-bold uppercase tracking-[.28em] text-primary; }
-  .section-title { @apply font-heading text-6xl leading-[.88] tracking-tight text-foreground sm:text-7xl lg:text-8xl; }
+  .section-title { @apply font-heading text-6xl leading-[.88] tracking-[.025em] text-foreground sm:text-7xl lg:text-8xl; }
 }
 
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
