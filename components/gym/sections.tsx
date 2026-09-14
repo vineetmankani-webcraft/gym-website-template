@@ -10,6 +10,13 @@ function Reveal({ children, className = '' }: { children: React.ReactNode; class
   return <motion.div className={className} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: .6 }}>{children}</motion.div>
 }
 
+const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gymData.gym.address.formatted)}`
+const whatsappLink = `https://wa.me/${gymData.gym.contact.whatsapp.replace(/\D/g, '')}`
+
+function IconWhatsapp({ size = 26 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.1 8.1 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-2-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.6 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z" /></svg>
+}
+
 export function Nav() {
   return <header className="fixed inset-x-0 top-0 z-50 border-b border-border/50 bg-background/85 backdrop-blur-md"><div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8"><a href="#top" className="font-heading text-2xl tracking-wide text-foreground">{gymData.gym.name}<span className="text-primary">.</span></a><nav className="hidden items-center gap-6 lg:flex">{['About','Services','Gallery','Trainers','Contact'].map(x => <a key={x} href={`#${x.toLowerCase()}`} className="text-xs font-bold uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary">{x}</a>)}<a href={gymData.gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer" className="bg-primary px-5 py-3 text-xs font-black uppercase tracking-widest text-primary-foreground transition-transform hover:-translate-y-0.5">Start Free Trial</a></nav><a href={gymData.gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer" aria-label="Start free trial" className="bg-primary px-3 py-2 text-xs font-black uppercase text-primary-foreground lg:hidden">Trial</a></div></header>
 }
@@ -36,6 +43,12 @@ export function Hero() {
     </div>
     <div className="absolute bottom-0 right-0 hidden h-20 w-2/5 skew-x-[-25deg] translate-x-1/4 bg-primary lg:block" />
   </section> 
+}
+
+const tickerItems = ['STRENGTH', 'CONDITIONING', 'ZUMBA', 'RECOVERY', 'COMMUNITY', 'RESULTS']
+export function Marquee() {
+  const items = [...tickerItems, ...tickerItems, ...tickerItems]
+  return <div className="overflow-hidden border-y border-border bg-surface py-3" aria-label={tickerItems.join(', ')}><div className="flex w-max animate-marquee gap-10 whitespace-nowrap" aria-hidden="true">{items.map((item, index) => <span key={index} className="flex items-center gap-10 font-mono text-xs font-bold uppercase tracking-[.3em] text-muted-foreground">{item}<span className="text-primary">◆</span></span>)}</div></div>
 }
 
 export function About() { return <section id="about" className="relative overflow-hidden bg-surface py-24 lg:py-32"><div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-2 lg:items-center lg:px-8"><Reveal><div className="relative"><img className="h-[430px] w-full object-cover grayscale" src="/media/indian-gym-man.jpg" alt="Indian member lifting a dumbbell in a gym" /><div className="absolute -bottom-4 -right-4 bg-primary p-5 font-heading text-4xl leading-none tracking-[.025em] text-primary-foreground">NO<br />EXCUSES</div></div></Reveal><Reveal><p className="eyebrow text-lg">THE GLOBAL WAY</p><h2 className="section-title mt-4">TRAIN HARD<br /><span className="text-primary">LIVE LOUD</span></h2><p className="mt-7 max-w-lg text-muted-foreground leading-7">Global Gym is more than a place to lift. We built a seriously fun training community where big energy meets smart programming, and every member has a reason to come back tomorrow.</p><p className="mt-4 max-w-lg text-muted-foreground leading-7">No intimidation. No ego. Just good people, great coaching, and the kind of results you can feel.</p><a href="#services" className="mt-8 inline-flex items-center gap-2 font-bold uppercase tracking-widest text-primary">What we do <ChevronRight size={17} /></a></Reveal></div></section> }
@@ -72,7 +85,7 @@ export function ContactUs() {
         <h2 className="section-title mt-4">LET'S TALK<br /><span className="text-primary">WE'RE HERE</span></h2>
         <p className="mt-6 max-w-2xl text-lg text-muted-foreground">Reach out in whatever way works best for you. We'll get back to you faster than you can say "personal record."</p>
       </Reveal>
-      <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-5">
         <Reveal>
           <a href={`https://wa.me/${gymData.gym.contact.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center justify-center gap-4 border border-border bg-background p-8 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground">
             <MessageCircle size={32} className="text-primary group-hover:text-primary-foreground" />
@@ -92,6 +105,13 @@ export function ContactUs() {
             <Mail size={32} className="text-primary group-hover:text-primary-foreground" />
             <h3 className="text-center font-heading text-lg">Email</h3>
             <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80 break-all">{gymData.gym.contact.email}</p>
+          </a>
+        </Reveal>
+        <Reveal>
+          <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="group flex h-full flex-col items-center justify-center gap-4 border border-border bg-background p-8 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground">
+            <MapPin size={32} className="text-primary group-hover:text-primary-foreground" />
+            <h3 className="text-center font-heading text-lg">Visit Us</h3>
+            <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80">Get directions</p>
           </a>
         </Reveal>
         <Reveal>
@@ -174,4 +194,10 @@ export function Footer() {
     </div>
     <div className="mx-auto mt-14 max-w-7xl border-t border-border px-5 pt-5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground lg:px-8">{gymData.gym.copyright}</div>
   </footer> 
+}
+
+export function WhatsAppFloat() {
+  return <a href={whatsappLink} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+    <IconWhatsapp />
+  </a>
 }
