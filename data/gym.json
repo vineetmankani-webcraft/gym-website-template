@@ -1,14 +1,14 @@
 {
   "gym": {
-    "name": "Global Gymm",
+    "name": "Global Gym",
     "tagline": "Seriously fun fitness for Ghatkopar. Come for the workout, stay for the crew.",
     "location": "Ghatkopar, Mumbai",
     "address": {
-      "street": "2nd Floor, R City Mall Road",
+      "street": "2nd Floor, R City Mall",
       "area": "Ghatkopar West",
       "city": "Mumbai",
       "postcode": "400086",
-      "formatted": "2nd Floor, R City Mall Road, Ghatkopar West, Mumbai 400086"
+      "formatted": "2nd Floor, R City Mall, Ghatkopar West, Mumbai 400086"
     },
     "contact": {
       "whatsapp": "+919876543210",

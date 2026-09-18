@@ -33,7 +33,7 @@ export function Hero() {
             <span className="font-heading text-lg font-bold uppercase tracking-wide text-primary">{gymData.gym.location}</span>
           </motion.div>
         </div>
-        <h1 className="max-w-4xl font-heading text-[clamp(4.5rem,13vw,10.5rem)] leading-[.8] tracking-[.025em] text-foreground">SERIOUSLY<br /><span className="text-primary">FUN</span> FITNESS</h1>
+        <h1 className="max-w-4xl font-heading text-[clamp(4.5rem,13vw,10.5rem)] leading-[.83] tracking-[.015em] text-foreground">SERIOUSLY<br /><span className="text-primary">FUN</span> FITNESS</h1>
         <p className="mt-8 max-w-md text-base leading-7 text-muted-foreground">{gymData.gym.tagline}</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <a href={gymData.gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-primary px-6 py-4 text-sm font-black uppercase tracking-wider text-primary-foreground transition-transform hover:-translate-y-1">Book Free Trial <ArrowUpRight size={17} /></a>
@@ -166,8 +166,8 @@ export function Footer() {
         <a href="#top" className="font-heading text-3xl">{gymData.gym.name}<span className="text-primary">.</span></a>
         <p className="mt-4 max-w-xs text-sm leading-6 text-muted-foreground">{gymData.gym.tagline}</p>
         <div className="mt-6 flex gap-4">
-          <a href={gymData.gym.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-sm font-semibold text-muted-foreground transition-colors hover:text-primary">Instagram</a>
-          <a href={gymData.gym.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-sm font-semibold text-muted-foreground transition-colors hover:text-primary">YouTube</a>
+          <a href={gymData.gym.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground transition-colors hover:text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg></a>
+          <a href={gymData.gym.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-muted-foreground transition-colors hover:text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.26 5 12 5 12 5s-6.26 0-7.82.42a2.5 2.5 0 0 0-1.76 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81a2.5 2.5 0 0 0 1.76 1.77C5.74 19 12 19 12 19s6.26 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81ZM10 15l5.2-3L10 9v6Z" clipRule="evenodd" /></svg></a>
           <a href={gymData.gym.social.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground transition-colors hover:text-primary"><MessageCircle size={20} /></a>
         </div>
       </div>
