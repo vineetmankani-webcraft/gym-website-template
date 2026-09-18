@@ -66,7 +66,14 @@ const gallery = [
 ]
 export function Gallery() { return <section id="gallery" className="bg-surface py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><div className="flex items-end justify-between"><div><p className="eyebrow">THE FLOOR</p><h2 className="section-title mt-4">SEE YOU<br /><span className="text-primary">INSIDE</span></h2></div><span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground sm:block">Scroll / Sweat / Repeat</span></div></Reveal><div className="mt-14 grid grid-cols-2 gap-3 md:grid-cols-3">{gallery.map(({src,alt},i) => <Reveal key={src} className={i===0 || i===5 ? 'col-span-2' : ''}><motion.img className={`w-full object-cover grayscale transition-all duration-500 hover:grayscale-0 ${i===0 || i===5 ? 'h-72 md:h-96' : 'h-56 md:h-72'}`} src={src} alt={alt} whileHover={{ scale: 1.02 }} /></Reveal>)}</div></div></section> }
 
-const trainers = [['Vineet Mankani','Strength & Conditioning','/media/gym-training-kochi.jpg'],['Anaya Shah','Functional Training','/media/coach-woman-activewear.jpg'],['Vikram Singh','Performance Coach','/media/indian-gym-man.jpg'],['Nisha Patil','Zumba & Mobility','/media/coach-woman-hydration.jpg']]
+const trainers = [
+  ['Vineet Mankani','Strength & Conditioning','/media/gym-training-kochi.jpg'],
+  ['Anaya Shah','Functional Training','/media/about-powerlift.jpg'],
+  ['Vikram Singh','Performance Coach','/media/indian-gym-man.jpg'],
+  ['Nisha Patil','Zumba & Mobility','/media/coach-woman-barbell-goa.jpg'],
+  ['Arjun Mehta','Personal Training','/media/gym-dumbbells-delhi.jpg'],
+  ['Rohan Desai','Calisthenics & Conditioning','/media/gym-calisthenics.jpg'],
+]
 export function Trainers() { 
   const scrollRef = useRef<HTMLDivElement>(null)
   const scroll = (direction: 'left' | 'right') => {
