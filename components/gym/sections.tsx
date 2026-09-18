@@ -30,6 +30,7 @@ function TrialLink({ children = 'Book Free Trial', className = '' }: { children?
 }
 
 export function Nav() {
+  const { scrollYProgress } = useScroll()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState('')
@@ -76,12 +77,13 @@ export function Nav() {
   }, [open])
 
   return <header ref={headerRef} className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
+    <motion.div className="reading-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />
     <a href="#main" className="skip-link">Skip to content</a>
     <div className="header-inner shell">
       <a href="#top" className="wordmark" aria-label={`${gym.name}, home`} onClick={() => setOpen(false)}><Dumbbell aria-hidden="true" /><span>{gym.name}</span></a>
       <nav className="desktop-nav" aria-label="Main navigation" onMouseLeave={() => setHovered(null)}>
         {navigation.map(name => <a key={name} href={`#${name.toLowerCase()}`} aria-current={active === name ? 'location' : undefined} onMouseEnter={() => setHovered(name)} onFocus={() => setHovered(name)} onBlur={() => setHovered(null)}>
-          {(hovered ?? active) === name && <motion.span className="nav-indicator" layoutId="navigation-indicator" transition={{ duration: reducedMotion ? 0 : .25, ease: 'easeOut' }} />}
+          {(hovered ?? active) === name && <motion.span className="nav-indicator" layoutId="navigation-indicator" transition={{ duration: reducedMotion ? 0 : .2, ease: 'easeOut' }} />}
           <span>{name}</span>
         </a>)}
       </nav>
@@ -98,7 +100,7 @@ export function Hero() {
   return <section id="top" className="hero">
     <div className="hero-copy">
       <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="hero-location"><MapPin size={18} aria-hidden="true" />{gym.location}</a>
-      <h1 className="hero-title" aria-label="Seriously fun fitness">{['Seriously', 'Fun', 'Fitness'].map((line, index) => <span className="headline-mask" key={line}><span className="headline-line" style={{ animationDelay: `${index * 120}ms` }}>{line}</span></span>)}</h1>
+      <h1 className="hero-title" aria-label="Seriously fun fitness">{['Seriously', 'Fun', 'Fitness'].map((line, index) => <span className="headline-mask" key={line}><span className="headline-line" style={{ animationDelay: `${index * 90}ms` }}>{line}</span></span>)}</h1>
       <div className="hero-bottom"><p>{gym.tagline}</p><div className="hero-links"><TrialLink className="button-light" /><a href="#services" className="text-link">Explore Programs</a></div></div>
     </div>
     <div className="hero-photo"><img src="/media/about-powerlift.jpg" alt="Indian woman lifting a barbell in a gym" fetchPriority="high" /><div className="hero-photo-caption"><span>{gym.name}</span><span>{gym.location}</span></div></div>
@@ -113,14 +115,14 @@ export function Marquee() {
 
 export function About() {
   return <section id="about" className="about-section section-space"><div className="shell about-layout">
-    <div className="about-photo"><img loading="lazy" decoding="async" src="/media/gym-battle-ropes.jpg" alt="Indian athlete training with battle ropes in a gym" /><p className="roundel">No<br />excuses</p></div>
+    <div className="about-photo"><img loading="lazy" decoding="async" src="/media/gym-battle-ropes.jpg" alt="Indian athlete training with battle ropes in a gym" /><p className="about-caption">No excuses</p></div>
     <div className="about-copy"><p className="section-label">The Global way</p><h2 className="section-title">Train hard<br />Live loud</h2><p>Global Gym is more than a place to lift. We built a seriously fun training community where big energy meets smart programming, and every member has a reason to come back tomorrow.</p><p>No intimidation. No ego. Just good people, great coaching, and the kind of results you can feel.</p><a href="#services" className="text-link">What we do<ChevronRight size={18} aria-hidden="true" /></a></div>
   </div></section>
 }
 
 const services: [LucideIcon, string, string][] = [[Dumbbell,'Strength Training','Machines, free weights, and a plan that gets you stronger.'],[HeartPulse,'Cardio','Build your engine with treadmills, cycles, and high-intensity conditioning.'],[Users,'Group Classes','Big energy, loud music, zero judgement. Find your people.'],[ShieldCheck,'Personal Training','One-on-one coaching that makes every rep count.'],[Zap,'Zumba','Dance, sweat, and forget you are working out.'],[Sparkles,'Spa & Recovery','Reset hard with recovery zones built for your next session.']]
 export function Services() {
-  return <section id="services" className="services-section section-space"><div className="shell services-layout"><div className="services-heading"><p className="section-label">The playbook</p><h2 className="section-title">Every way<br />to move</h2><Dumbbell className="services-emblem" strokeWidth={1} aria-hidden="true" /></div><div className="service-list">{services.map(([Icon, title, desc]) => <article className="service-row" key={title}><Icon size={28} strokeWidth={1.5} aria-hidden="true" /><div><h3>{title}</h3><p>{desc}</p></div></article>)}</div></div></section>
+  return <section id="services" className="services-section section-space"><div className="shell services-layout"><div className="services-heading"><p className="section-label">The playbook</p><h2 className="section-title">Every way<br />to move</h2></div><div className="service-list">{services.map(([Icon, title, desc]) => <article className="service-row" key={title}><Icon size={28} strokeWidth={1.5} aria-hidden="true" /><div><h3>{title}</h3><p>{desc}</p></div></article>)}</div></div></section>
 }
 
 const gallery = [
@@ -133,6 +135,8 @@ const gallery = [
 ]
 
 export function Gallery() {
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const windowRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
@@ -141,6 +145,17 @@ export function Gallery() {
   const [enabled, setEnabled] = useState(false)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
   const x = useTransform(scrollYProgress, [0, 1], [0, -distance])
+
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (selectedPhoto === null || !dialog) return
+    if (!dialog.open) dialog.showModal()
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = previousOverflow }
+  }, [selectedPhoto])
+
+  const changePhoto = (direction: number) => setSelectedPhoto(current => current === null ? null : (current + direction + gallery.length) % gallery.length)
 
   useEffect(() => {
     const query = window.matchMedia('(min-width: 1024px) and (min-height: 650px)')
@@ -158,9 +173,12 @@ export function Gallery() {
 
   return <section ref={sectionRef} id="gallery" className={`gallery-section ${enabled ? 'gallery-scroll' : ''}`} style={enabled ? { height: `calc(100svh + ${distance}px)` } : undefined}>
     <div className="gallery-stage"><div className="shell gallery-heading"><div><p className="section-label">The floor</p><h2 className="section-title">See you inside</h2></div><p className="gallery-instruction">Scroll / Sweat / Repeat</p></div>
-      <div ref={windowRef} className="gallery-window"><motion.div ref={trackRef} className="gallery-track" style={{ x: enabled ? x : 0 }}>{gallery.map(({ src, alt }, index) => <figure key={src} className={`gallery-frame gallery-frame-${index}`}><img loading="lazy" decoding="async" src={src} alt={alt} /></figure>)}</motion.div></div>
+      <div ref={windowRef} className="gallery-window"><motion.div ref={trackRef} className="gallery-track" style={{ x: enabled ? x : 0 }}>{gallery.map(({ src, alt }, index) => <figure key={src} className={`gallery-frame gallery-frame-${index}`}><button type="button" className="gallery-open" aria-label={`View photo: ${alt}`} onClick={() => setSelectedPhoto(index)}><img loading="lazy" decoding="async" src={src} alt={alt} /><span className="gallery-view" aria-hidden="true">View photo<ArrowUpRight size={16} /></span></button></figure>)}</motion.div></div>
       {enabled && <div className="shell gallery-progress" aria-hidden="true"><motion.div style={{ scaleX: scrollYProgress }} /></div>}
     </div>
+    <dialog ref={dialogRef} className="photo-dialog" aria-label="Training photo viewer" onClose={() => setSelectedPhoto(null)} onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close() }} onKeyDown={event => { if (event.key === 'ArrowLeft') { event.preventDefault(); changePhoto(-1) } if (event.key === 'ArrowRight') { event.preventDefault(); changePhoto(1) } }}>
+      {selectedPhoto !== null && <div className="photo-viewer"><div className="photo-toolbar"><p aria-live="polite">Photo {selectedPhoto + 1} of {gallery.length}</p><button type="button" aria-label="Close photo viewer" onClick={() => dialogRef.current?.close()} autoFocus><X /></button></div><img key={selectedPhoto} className="photo-full" src={gallery[selectedPhoto].src} alt={gallery[selectedPhoto].alt} /><div className="photo-bottom"><button type="button" aria-label="Previous photo" onClick={() => changePhoto(-1)}><ChevronLeft /></button><p>{gallery[selectedPhoto].alt}</p><button type="button" aria-label="Next photo" onClick={() => changePhoto(1)}><ChevronRight /></button></div></div>}
+    </dialog>
   </section>
 }
 

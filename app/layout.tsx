@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   generator: 'v0.app',
 }
 
-export const viewport: Viewport = { colorScheme: 'light', themeColor: '#e31e24', width: 'device-width', initialScale: 1 }
+export const viewport: Viewport = { colorScheme: 'dark', themeColor: '#101112', width: 'device-width', initialScale: 1 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en" className="bg-background"><body className="antialiased">{children}{process.env.NODE_ENV === 'production' && <Analytics />}</body></html>
