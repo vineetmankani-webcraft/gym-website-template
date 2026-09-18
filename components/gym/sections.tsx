@@ -88,7 +88,7 @@ export function Trainers() {
       scrollRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: reducedMotion ? 'auto' : 'smooth' })
     }
   }
-  return <section id="trainers" className="trainers-section py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">THE CREW</p><h2 className="section-title mt-4">MEET YOUR<br /><span className="text-primary">COACHES</span></h2></div><div className="hidden gap-2 lg:flex"><button onClick={() => scroll('left')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll left"><ChevronLeft size={20} /></button><button onClick={() => scroll('right')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll right"><ChevronRight size={20} /></button></div></div></ArtReveal><div className="mt-14 overflow-hidden"><div ref={scrollRef} className="coach-track flex gap-6 overflow-x-auto pb-4 md:gap-8" tabIndex={0} aria-label="Coaches; scroll to see more">{trainers.map(([name,specialty,src]) => <ArtReveal key={name} className="shrink-0 w-72"><article><img loading="lazy" decoding="async" className="aspect-4/5 w-full object-cover grayscale transition-all hover:grayscale-0" src={src} alt={`Stock portrait representing ${name}, ${specialty}`} /><h3 className="mt-5 font-heading text-2xl tracking-wide">{name}</h3><p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-widest text-primary">{specialty}</p></article></ArtReveal>)}</div></div></div></section>
+  return <section id="trainers" className="trainers-section py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">THE CREW</p><h2 className="section-title mt-4">MEET YOUR<br /><span className="text-primary">COACHES</span></h2></div><div className="hidden gap-2 lg:flex"><button onClick={() => scroll('left')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll left"><ChevronLeft size={20} /></button><button onClick={() => scroll('right')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll right"><ChevronRight size={20} /></button></div></div></ArtReveal><div className="mt-14 overflow-hidden"><div ref={scrollRef} className="coach-track flex gap-6 overflow-x-auto pb-4 md:gap-8" tabIndex={0} aria-label="Coaches; scroll to see more">{trainers.map(([name,specialty,src]) => <ArtReveal key={name} className="shrink-0 w-72"><article><img loading="lazy" decoding="async" className="aspect-4/5 w-full object-cover grayscale transition-all hover:grayscale-0" src={src} alt={`Stock portrait representing ${name}, ${specialty}`} /><h3 className="mt-5 font-heading text-2xl tracking-wide">{name}</h3><p className="mt-1 font-mono text-xs font-bold uppercase tracking-widest text-primary">{specialty}</p></article></ArtReveal>)}</div></div></div></section>
 }
 
 export function ContactUs() { 
@@ -99,38 +99,42 @@ export function ContactUs() {
         <h2 className="section-title mt-4">LET'S TALK<br /><span className="text-primary">WE'RE HERE</span></h2>
         <p className="mt-6 max-w-2xl text-lg text-muted-foreground">Reach out in whatever way works best for you. We'll get back to you faster than you can say "personal record."</p>
       </Reveal>
-      <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+      <div className="contact-options mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-5">
         <Reveal>
-          <a href={`https://wa.me/${gymData.gym.contact.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center justify-center gap-4 border border-border bg-background p-8 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground">
+          <a href={`https://wa.me/${gymData.gym.contact.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="contact-option group">
             <MessageCircle size={32} className="text-primary group-hover:text-primary-foreground" />
             <h3 className="text-center font-heading text-lg">WhatsApp</h3>
             <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80">{gymData.gym.contact.whatsapp}</p>
+            <ArrowUpRight className="contact-arrow" size={20} aria-hidden="true" />
           </a>
         </Reveal>
         <Reveal>
-          <a href={`tel:${gymData.gym.contact.phone}`} className="group flex flex-col items-center justify-center gap-4 border border-border bg-background p-8 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground">
+          <a href={`tel:${gymData.gym.contact.phone}`} className="contact-option group">
             <Phone size={32} className="text-primary group-hover:text-primary-foreground" />
             <h3 className="text-center font-heading text-lg">Call Us</h3>
             <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80">{gymData.gym.contact.phone}</p>
+            <ArrowUpRight className="contact-arrow" size={20} aria-hidden="true" />
           </a>
         </Reveal>
         <Reveal>
-          <a href={`mailto:${gymData.gym.contact.email}`} className="group flex flex-col items-center justify-center gap-4 border border-border bg-background p-8 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground">
+          <a href={`mailto:${gymData.gym.contact.email}`} className="contact-option group">
             <Mail size={32} className="text-primary group-hover:text-primary-foreground" />
             <h3 className="text-center font-heading text-lg">Email</h3>
             <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80 break-all">{gymData.gym.contact.email}</p>
+            <ArrowUpRight className="contact-arrow" size={20} aria-hidden="true" />
           </a>
         </Reveal>
         <Reveal>
-          <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="group flex h-full flex-col items-center justify-center gap-4 border border-border bg-background p-8 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground">
+          <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="contact-option group">
             <MapPin size={32} className="text-primary group-hover:text-primary-foreground" />
             <h3 className="text-center font-heading text-lg">Visit Us</h3>
             <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80">Get directions</p>
+            <ArrowUpRight className="contact-arrow" size={20} aria-hidden="true" />
           </a>
         </Reveal>
         <Reveal>
-          <div className="flex flex-col items-center justify-center gap-4 border border-border bg-background p-8">
-            <QRCode value={gymData.gym.bookTrial.whatsappLink} size={120} level="H" includeMargin={false} />
+          <div className="contact-option contact-qr">
+            <QRCode value={gymData.gym.bookTrial.whatsappLink} size={88} level="H" includeMargin={false} />
             <h3 className="text-center font-heading text-lg">Quick Chat</h3>
             <p className="text-center text-xs text-muted-foreground">Scan to start</p>
           </div>
@@ -161,11 +165,11 @@ export function ContactUs() {
   </section> 
 }
 
-export function Testimonials() { return <section className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><p className="eyebrow">MEMBER ENERGY</p><h2 className="section-title mt-4">GOOD VIBES<br /><span className="text-primary">REAL RESULTS</span></h2></Reveal><div className="mt-14 grid gap-4 md:grid-cols-3">{[['“Finally, a gym where I actually look forward to showing up. The coaches remember your name and your goals.”','PRIYA K.'],['“The group classes are absolute fire. I have more energy, more confidence, and my jeans fit better.”','ARJUN R.'],['“Global feels like a community, not a membership. Best training decision I have made in Mumbai.”','MEERA S.']].map(([quote,name])=><Reveal key={name}><blockquote className="border-l-2 border-primary bg-surface p-7"><p className="text-lg leading-8 text-foreground">{quote}</p><footer className="mt-8 font-mono text-[10px] font-bold tracking-widest text-primary">— {name}</footer></blockquote></Reveal>)}</div></div></section> }
+export function Testimonials() { return <section className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><p className="eyebrow">MEMBER ENERGY</p><h2 className="section-title mt-4">GOOD VIBES<br /><span className="text-primary">REAL RESULTS</span></h2></Reveal><div className="mt-14 grid gap-4 md:grid-cols-3">{[['“Finally, a gym where I actually look forward to showing up. The coaches remember your name and your goals.”','PRIYA K.'],['“The group classes are absolute fire. I have more energy, more confidence, and my jeans fit better.”','ARJUN R.'],['“Global feels like a community, not a membership. Best training decision I have made in Mumbai.”','MEERA S.']].map(([quote,name])=><Reveal key={name}><blockquote className="border-l-2 border-primary bg-surface p-7"><p className="text-lg leading-8 text-foreground">{quote}</p><footer className="mt-8 font-mono text-sm font-bold tracking-widest text-primary">— {name}</footer></blockquote></Reveal>)}</div></div></section> }
 
 export function Footer() { 
   return <footer className="bg-background py-14">
-    <div className="mx-auto grid max-w-7xl gap-12 px-5 md:grid-cols-3 lg:px-8">
+    <div className="mx-auto grid max-w-7xl gap-8 px-5 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
       <div>
         <a href="#top" className="font-heading text-3xl">{gymData.gym.name}<span className="text-primary">.</span></a>
         <p className="mt-4 max-w-xs text-sm leading-6 text-muted-foreground">{gymData.gym.tagline}</p>
@@ -173,6 +177,12 @@ export function Footer() {
           <a href={gymData.gym.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground transition-colors hover:text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg></a>
           <a href={gymData.gym.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-muted-foreground transition-colors hover:text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.26 5 12 5 12 5s-6.26 0-7.82.42a2.5 2.5 0 0 0-1.76 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81a2.5 2.5 0 0 0 1.76 1.77C5.74 19 12 19 12 19s6.26 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81ZM10 15l5.2-3L10 9v6Z" clipRule="evenodd" /></svg></a>
           <a href={gymData.gym.social.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground transition-colors hover:text-primary"><MessageCircle size={20} /></a>
+        </div>
+      </div>
+      <div>
+        <p className="eyebrow">QUICK LINKS</p>
+        <div className="mt-4 grid grid-cols-2 gap-3 text-sm text-muted-foreground">
+          {['About','Services','Gallery','Trainers','Contact'].map(x=><a key={x} href={`#${x.toLowerCase()}`} className="hover:text-primary">{x}</a>)}
         </div>
       </div>
       <div>
@@ -189,22 +199,16 @@ export function Footer() {
           <a href={`tel:${gymData.gym.contact.phone}`} className="hover:text-primary">{gymData.gym.contact.phone}</a>
         </p>
       </div>
-      <div>
-        <p className="eyebrow">QUICK LINKS</p>
-        <div className="mt-4 grid grid-cols-2 gap-3 text-sm text-muted-foreground">
-          {['About','Services','Gallery','Trainers','Contact'].map(x=><a key={x} href={`#${x.toLowerCase()}`} className="hover:text-primary">{x}</a>)}
-        </div>
+      <div className="min-w-0">
+        <iframe
+          src={gymData.gym.maps.embedCode}
+          title={`${gymData.gym.name} location: ${gymData.gym.location}`}
+          className="h-48 w-full border border-border"
+          loading="lazy"
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+        />
       </div>
-    </div>
-    <div className="mx-auto mt-10 max-w-7xl px-5 lg:px-8">
-      <iframe
-        src={gymData.gym.maps.embedCode}
-        title={`${gymData.gym.name} location: ${gymData.gym.location}`}
-        className="h-64 w-full border border-border sm:h-80"
-        loading="lazy"
-        allowFullScreen
-        referrerPolicy="no-referrer-when-downgrade"
-      />
     </div>
     <div className="mx-auto mt-14 max-w-7xl border-t border-border px-5 pt-5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground lg:px-8">{gymData.gym.copyright}</div>
   </footer> 
