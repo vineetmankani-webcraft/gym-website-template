@@ -1,66 +1,127 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
-import { ArrowUpRight, MapPin, Phone, MessageCircle, Dumbbell, HeartPulse, Users, Sparkles, Zap, ShieldCheck, ChevronRight, ChevronLeft, Share2, Mail } from 'lucide-react'
-import QRCode from 'qrcode.react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowUpRight, MapPin, Phone, MessageCircle, Dumbbell, HeartPulse, Users, Sparkles, Zap, ShieldCheck, ChevronRight, ChevronLeft, Mail, Menu, X } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { useRef } from 'react'
+import QRCode from 'qrcode.react'
+import { useEffect, useRef, useState } from 'react'
 import gymData from '@/data/gym.json'
 
-function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return <motion.div className={className} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: .6 }}>{children}</motion.div>
+const gym = gymData.gym
+const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gym.address.formatted)}`
+const whatsappLink = `https://wa.me/${gym.contact.whatsapp.replace(/\D/g, '')}`
+const navigation = ['About', 'Services', 'Gallery', 'Trainers', 'Contact']
+
+// Start with a static layout, and respond if the system preference changes mid-visit.
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(true)
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReduced(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+  return reduced
 }
 
-function ArtReveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  const reducedMotion = useReducedMotion()
-  return <motion.div className={className} initial={false} whileInView={reducedMotion ? { opacity: 1, y: 0 } : { opacity: [0.65, 1], y: [12, 0] }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: .45 }}>{children}</motion.div>
-}
-
-const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gymData.gym.address.formatted)}`
-const whatsappLink = `https://wa.me/${gymData.gym.contact.whatsapp.replace(/\D/g, '')}`
-
-function IconWhatsapp({ size = 26 }: { size?: number }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.1 8.1 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-2-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.6 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z" /></svg>
+function TrialLink({ children = 'Book Free Trial', className = '' }: { children?: React.ReactNode; className?: string }) {
+  return <a className={`button ${className}`} href={gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={18} aria-hidden="true" /></a>
 }
 
 export function Nav() {
-  return <header className="fixed inset-x-0 top-0 z-50 border-b border-border/50 bg-background/85 backdrop-blur-md"><div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8"><a href="#top" className="font-heading text-2xl tracking-wide text-foreground">{gymData.gym.name}<span className="text-primary">.</span></a><nav className="hidden items-center gap-6 lg:flex">{['About','Services','Gallery','Trainers','Contact'].map(x => <a key={x} href={`#${x.toLowerCase()}`} className="text-xs font-bold uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary">{x}</a>)}<a href={gymData.gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer" className="bg-primary px-5 py-3 text-xs font-black uppercase tracking-widest text-primary-foreground transition-transform hover:-translate-y-0.5">Start Free Trial</a></nav><a href={gymData.gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer" aria-label="Start free trial" className="bg-primary px-3 py-2 text-xs font-black uppercase text-primary-foreground lg:hidden">Trial</a></div></header>
-}
+  const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [active, setActive] = useState('')
+  const [hovered, setHovered] = useState<string | null>(null)
+  const reducedMotion = useReducedMotion()
+  const menuButton = useRef<HTMLButtonElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
 
-export function Hero() { 
-  return <section id="top" className="relative flex min-h-screen items-end overflow-hidden">
-    <img className="absolute inset-0 h-full w-full object-cover object-center opacity-60" src="/media/about-powerlift.jpg" alt="Indian woman lifting a barbell in a gym" />
-    <div className="absolute inset-0 bg-linear-to-t from-background via-background/70 to-background/20" />
-    <div className="relative mx-auto w-full max-w-7xl px-5 pb-20 pt-36 lg:px-8 lg:pb-28">
-      <Reveal>
-        <div className="mb-8 flex items-center gap-4">
-          <motion.div className="flex items-center gap-2" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-            <MapPin size={20} className="text-primary" />
-            <span className="font-heading text-lg font-bold uppercase tracking-wide text-primary">{gymData.gym.location}</span>
-          </motion.div>
-        </div>
-        <h1 className="max-w-4xl font-heading text-[clamp(4.5rem,13vw,10.5rem)] leading-[.83] tracking-[.015em] text-foreground">SERIOUSLY<br /><span className="text-primary">FUN</span> FITNESS</h1>
-        <p className="mt-8 max-w-md text-base leading-7 text-muted-foreground">{gymData.gym.tagline}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <a href={gymData.gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-primary px-6 py-4 text-sm font-black uppercase tracking-wider text-primary-foreground transition-transform hover:-translate-y-1">Book Free Trial <ArrowUpRight size={17} /></a>
-          <a href="#services" className="inline-flex items-center gap-2 border border-foreground/40 px-6 py-4 text-sm font-black uppercase tracking-wider text-foreground hover:border-primary hover:text-primary">Explore Programs</a>
-        </div>
-      </Reveal>
+  useEffect(() => {
+    const update = () => {
+      setScrolled(window.scrollY > 32)
+      let current = ''
+      for (const name of navigation) {
+        const section = document.getElementById(name.toLowerCase())
+        if (section && section.getBoundingClientRect().top <= 160) current = name
+      }
+      setActive(current)
+    }
+    let frame = 0
+    const onScroll = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update) }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(frame) }
+  }, [])
+
+  useEffect(() => {
+    if (!open) return
+    const closeOutside = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setOpen(false)
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { setOpen(false); menuButton.current?.focus() }
+    }
+    const desktop = window.matchMedia('(min-width: 1024px)')
+    const onResize = () => { if (desktop.matches) setOpen(false) }
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('pointerdown', closeOutside)
+    desktop.addEventListener('change', onResize)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('pointerdown', closeOutside)
+      desktop.removeEventListener('change', onResize)
+    }
+  }, [open])
+
+  return <header ref={headerRef} className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
+    <a href="#main" className="skip-link">Skip to content</a>
+    <div className="header-inner shell">
+      <a href="#top" className="wordmark" aria-label={`${gym.name}, home`} onClick={() => setOpen(false)}><Dumbbell aria-hidden="true" /><span>{gym.name}</span></a>
+      <nav className="desktop-nav" aria-label="Main navigation" onMouseLeave={() => setHovered(null)}>
+        {navigation.map(name => <a key={name} href={`#${name.toLowerCase()}`} aria-current={active === name ? 'location' : undefined} onMouseEnter={() => setHovered(name)} onFocus={() => setHovered(name)} onBlur={() => setHovered(null)}>
+          {(hovered ?? active) === name && <motion.span className="nav-indicator" layoutId="navigation-indicator" transition={{ duration: reducedMotion ? 0 : .25, ease: 'easeOut' }} />}
+          <span>{name}</span>
+        </a>)}
+      </nav>
+      <div className="header-actions"><TrialLink className="button-small">Start Free Trial</TrialLink><button ref={menuButton} type="button" className="menu-toggle" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button></div>
     </div>
-    <div className="absolute bottom-0 right-0 hidden h-20 w-2/5 skew-x-[-25deg] translate-x-1/4 bg-primary lg:block" />
-  </section> 
+    <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation" hidden={!open} onBlur={event => { if (!headerRef.current?.contains(event.relatedTarget as Node)) setOpen(false) }}>
+      {navigation.map(name => <a key={name} href={`#${name.toLowerCase()}`} aria-current={active === name ? 'location' : undefined} onClick={() => setOpen(false)}>{name}<ChevronRight size={20} aria-hidden="true" /></a>)}
+      <p>{gym.location}</p>
+    </nav>
+  </header>
 }
 
-const tickerItems = ['STRENGTH', 'CONDITIONING', 'ZUMBA', 'RECOVERY', 'COMMUNITY', 'RESULTS']
+export function Hero() {
+  return <section id="top" className="hero">
+    <div className="hero-copy">
+      <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="hero-location"><MapPin size={18} aria-hidden="true" />{gym.location}</a>
+      <h1 className="hero-title" aria-label="Seriously fun fitness">{['Seriously', 'Fun', 'Fitness'].map((line, index) => <span className="headline-mask" key={line}><span className="headline-line" style={{ animationDelay: `${index * 120}ms` }}>{line}</span></span>)}</h1>
+      <div className="hero-bottom"><p>{gym.tagline}</p><div className="hero-links"><TrialLink className="button-light" /><a href="#services" className="text-link">Explore Programs</a></div></div>
+    </div>
+    <div className="hero-photo"><img src="/media/about-powerlift.jpg" alt="Indian woman lifting a barbell in a gym" fetchPriority="high" /><div className="hero-photo-caption"><span>{gym.name}</span><span>{gym.location}</span></div></div>
+    <a href="#about" className="hero-scroll" aria-label="Discover the Global way"><span>The Global way</span><span aria-hidden="true">↓</span></a>
+  </section>
+}
+
+const tickerItems = ['Strength', 'Conditioning', 'Zumba', 'Recovery', 'Community', 'Results']
 export function Marquee() {
-  const items = [...tickerItems, ...tickerItems, ...tickerItems]
-  return <div className="overflow-hidden border-y border-border bg-surface py-3" aria-label={tickerItems.join(', ')}><div className="flex w-max animate-marquee gap-10 whitespace-nowrap" aria-hidden="true">{items.map((item, index) => <span key={index} className="flex items-center gap-10 font-mono text-xs font-bold uppercase tracking-[.3em] text-muted-foreground">{item}<span className="text-primary">◆</span></span>)}</div></div>
+  return <div className="training-strip" aria-label={tickerItems.join(', ')}>{tickerItems.map(item => <span key={item}>{item}</span>)}</div>
 }
 
-export function About() { return <section id="about" className="relative overflow-hidden bg-surface py-24 lg:py-32"><div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-2 lg:items-center lg:px-8"><Reveal><div className="relative"><img className="h-[430px] w-full object-cover object-[center_65%]" src="/media/gym-battle-ropes.jpg" alt="Indian athlete training with battle ropes in a gym" /><div className="absolute -bottom-4 -right-4 bg-primary p-5 font-heading text-4xl leading-none tracking-[.025em] text-primary-foreground">NO<br />EXCUSES</div></div></Reveal><Reveal><p className="eyebrow text-lg">THE GLOBAL WAY</p><h2 className="section-title mt-4">TRAIN HARD<br /><span className="text-primary">LIVE LOUD</span></h2><p className="mt-7 max-w-lg text-muted-foreground leading-7">Global Gym is more than a place to lift. We built a seriously fun training community where big energy meets smart programming, and every member has a reason to come back tomorrow.</p><p className="mt-4 max-w-lg text-muted-foreground leading-7">No intimidation. No ego. Just good people, great coaching, and the kind of results you can feel.</p><a href="#services" className="mt-8 inline-flex items-center gap-2 font-bold uppercase tracking-widest text-primary">What we do <ChevronRight size={17} /></a></Reveal></div></section> }
+export function About() {
+  return <section id="about" className="about-section section-space"><div className="shell about-layout">
+    <div className="about-photo"><img loading="lazy" decoding="async" src="/media/gym-battle-ropes.jpg" alt="Indian athlete training with battle ropes in a gym" /><p className="roundel">No<br />excuses</p></div>
+    <div className="about-copy"><p className="section-label">The Global way</p><h2 className="section-title">Train hard<br />Live loud</h2><p>Global Gym is more than a place to lift. We built a seriously fun training community where big energy meets smart programming, and every member has a reason to come back tomorrow.</p><p>No intimidation. No ego. Just good people, great coaching, and the kind of results you can feel.</p><a href="#services" className="text-link">What we do<ChevronRight size={18} aria-hidden="true" /></a></div>
+  </div></section>
+}
 
 const services: [LucideIcon, string, string][] = [[Dumbbell,'Strength Training','Machines, free weights, and a plan that gets you stronger.'],[HeartPulse,'Cardio','Build your engine with treadmills, cycles, and high-intensity conditioning.'],[Users,'Group Classes','Big energy, loud music, zero judgement. Find your people.'],[ShieldCheck,'Personal Training','One-on-one coaching that makes every rep count.'],[Zap,'Zumba','Dance, sweat, and forget you are working out.'],[Sparkles,'Spa & Recovery','Reset hard with recovery zones built for your next session.']]
-export function Services() { return <section id="services" className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><p className="eyebrow">THE PLAYBOOK</p><h2 className="section-title mt-4">EVERY WAY<br /><span className="text-primary">TO MOVE</span></h2></Reveal><div className="mt-14 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">{services.map(([Icon,title,desc],i) => <Reveal key={title}><article className="group min-h-60 bg-background p-7 transition-colors hover:bg-surface"><div className="mb-12 flex items-start justify-between"><Icon className="text-primary" size={29} strokeWidth={1.5} /><span className="font-mono text-xs text-muted-foreground">0{i+1}</span></div><h3 className="font-heading text-3xl tracking-wide text-foreground">{title as string}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{desc as string}</p></article></Reveal>)}</div></div></section> }
+export function Services() {
+  return <section id="services" className="services-section section-space"><div className="shell services-layout"><div className="services-heading"><p className="section-label">The playbook</p><h2 className="section-title">Every way<br />to move</h2><Dumbbell className="services-emblem" strokeWidth={1} aria-hidden="true" /></div><div className="service-list">{services.map(([Icon, title, desc]) => <article className="service-row" key={title}><Icon size={28} strokeWidth={1.5} aria-hidden="true" /><div><h3>{title}</h3><p>{desc}</p></div></article>)}</div></div></section>
+}
 
 const gallery = [
   { src: '/media/hero-gym.jpg', alt: 'Members training in a Chandigarh gym' },
@@ -70,7 +131,38 @@ const gallery = [
   { src: '/media/gym-training-kochi.jpg', alt: 'Young athlete preparing to train in a Kochi gym' },
   { src: '/media/indian-gym-man.jpg', alt: 'Indian member working out with a dumbbell' },
 ]
-export function Gallery() { return <section id="gallery" className="gallery-section bg-surface py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">THE FLOOR</p><h2 className="section-title mt-4">SEE YOU<br /><span className="text-primary">INSIDE</span></h2></div><span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground sm:block">Scroll / Sweat / Repeat</span></div></ArtReveal><div className="gallery-layout">{gallery.map(({src,alt},i) => <ArtReveal key={src} className={`gallery-frame gallery-frame-${i}`}><img loading="lazy" decoding="async" src={src} alt={alt} /><span className="gallery-number" aria-hidden="true">0{i+1} / THE FLOOR</span></ArtReveal>)}</div></div></section> }
+
+export function Gallery() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const windowRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const reducedMotion = useReducedMotion()
+  const [distance, setDistance] = useState(0)
+  const [enabled, setEnabled] = useState(false)
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
+  const x = useTransform(scrollYProgress, [0, 1], [0, -distance])
+
+  useEffect(() => {
+    const query = window.matchMedia('(min-width: 1024px) and (min-height: 650px)')
+    const update = () => {
+      setEnabled(query.matches && reducedMotion === false)
+      setDistance(Math.max(0, (trackRef.current?.scrollWidth ?? 0) - (windowRef.current?.clientWidth ?? 0)))
+    }
+    const observer = new ResizeObserver(update)
+    if (windowRef.current) observer.observe(windowRef.current)
+    if (trackRef.current) observer.observe(trackRef.current)
+    query.addEventListener('change', update)
+    update()
+    return () => { observer.disconnect(); query.removeEventListener('change', update) }
+  }, [reducedMotion])
+
+  return <section ref={sectionRef} id="gallery" className={`gallery-section ${enabled ? 'gallery-scroll' : ''}`} style={enabled ? { height: `calc(100svh + ${distance}px)` } : undefined}>
+    <div className="gallery-stage"><div className="shell gallery-heading"><div><p className="section-label">The floor</p><h2 className="section-title">See you inside</h2></div><p className="gallery-instruction">Scroll / Sweat / Repeat</p></div>
+      <div ref={windowRef} className="gallery-window"><motion.div ref={trackRef} className="gallery-track" style={{ x: enabled ? x : 0 }}>{gallery.map(({ src, alt }, index) => <figure key={src} className={`gallery-frame gallery-frame-${index}`}><img loading="lazy" decoding="async" src={src} alt={alt} /></figure>)}</motion.div></div>
+      {enabled && <div className="shell gallery-progress" aria-hidden="true"><motion.div style={{ scaleX: scrollYProgress }} /></div>}
+    </div>
+  </section>
+}
 
 const trainers = [
   ['Vineet Mankani','Strength & Conditioning','/media/gym-training-kochi.jpg'],
@@ -80,142 +172,46 @@ const trainers = [
   ['Arjun Mehta','Personal Training','/media/gym-dumbbells-delhi.jpg'],
   ['Rohan Desai','Calisthenics & Conditioning','/media/gym-calisthenics.jpg'],
 ]
-export function Trainers() { 
+export function Trainers() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: reducedMotion ? 'auto' : 'smooth' })
-    }
+  const scroll = (direction: number) => {
+    const track = scrollRef.current
+    if (track) track.scrollBy({ left: direction * ((track.firstElementChild?.getBoundingClientRect().width ?? 300) + 24), behavior: reducedMotion ? 'auto' : 'smooth' })
   }
-  return <section id="trainers" className="trainers-section py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">THE CREW</p><h2 className="section-title mt-4">MEET YOUR<br /><span className="text-primary">COACHES</span></h2></div><div className="hidden gap-2 lg:flex"><button onClick={() => scroll('left')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll left"><ChevronLeft size={20} /></button><button onClick={() => scroll('right')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll right"><ChevronRight size={20} /></button></div></div></ArtReveal><div className="mt-14 overflow-hidden"><div ref={scrollRef} className="coach-track flex gap-6 overflow-x-auto pb-4 md:gap-8" tabIndex={0} aria-label="Coaches; scroll to see more">{trainers.map(([name,specialty,src]) => <ArtReveal key={name} className="shrink-0 w-72"><article><img loading="lazy" decoding="async" className="aspect-4/5 w-full object-cover grayscale transition-all hover:grayscale-0" src={src} alt={`Stock portrait representing ${name}, ${specialty}`} /><h3 className="mt-5 font-heading text-2xl tracking-wide">{name}</h3><p className="mt-1 font-mono text-xs font-bold uppercase tracking-widest text-primary">{specialty}</p></article></ArtReveal>)}</div></div></div></section>
+  return <section id="trainers" className="trainers-section section-space"><div className="shell"><div className="section-heading-row"><div><p className="section-label">The crew</p><h2 className="section-title">Meet your<br />coaches</h2></div><div className="carousel-controls"><button type="button" onClick={() => scroll(-1)} aria-label="Previous coaches" aria-controls="coach-track"><ChevronLeft /></button><button type="button" onClick={() => scroll(1)} aria-label="Next coaches" aria-controls="coach-track"><ChevronRight /></button></div></div><div ref={scrollRef} id="coach-track" className="coach-track" tabIndex={0} role="region" aria-label="Coaches; scroll to see more">{trainers.map(([name, specialty, src]) => <article className="coach" key={name}><div className="coach-photo"><img loading="lazy" decoding="async" src={src} alt={`Stock portrait representing ${name}, ${specialty}`} /></div><h3>{name}</h3><p>{specialty}</p></article>)}</div></div></section>
 }
 
-export function ContactUs() { 
-  return <section id="contact" className="bg-surface py-24 lg:py-32">
-    <div className="mx-auto max-w-7xl px-5 lg:px-8">
-      <Reveal>
-        <p className="eyebrow">GET IN TOUCH</p>
-        <h2 className="section-title mt-4">LET'S TALK<br /><span className="text-primary">WE'RE HERE</span></h2>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">Reach out in whatever way works best for you. We'll get back to you faster than you can say "personal record."</p>
-      </Reveal>
-      <div className="contact-options mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-5">
-        <Reveal>
-          <a href={`https://wa.me/${gymData.gym.contact.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="contact-option group">
-            <MessageCircle size={32} className="text-primary group-hover:text-primary-foreground" />
-            <h3 className="text-center font-heading text-lg">WhatsApp</h3>
-            <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80">{gymData.gym.contact.whatsapp}</p>
-            <ArrowUpRight className="contact-arrow" size={20} aria-hidden="true" />
-          </a>
-        </Reveal>
-        <Reveal>
-          <a href={`tel:${gymData.gym.contact.phone}`} className="contact-option group">
-            <Phone size={32} className="text-primary group-hover:text-primary-foreground" />
-            <h3 className="text-center font-heading text-lg">Call Us</h3>
-            <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80">{gymData.gym.contact.phone}</p>
-            <ArrowUpRight className="contact-arrow" size={20} aria-hidden="true" />
-          </a>
-        </Reveal>
-        <Reveal>
-          <a href={`mailto:${gymData.gym.contact.email}`} className="contact-option group">
-            <Mail size={32} className="text-primary group-hover:text-primary-foreground" />
-            <h3 className="text-center font-heading text-lg">Email</h3>
-            <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80 break-all">{gymData.gym.contact.email}</p>
-            <ArrowUpRight className="contact-arrow" size={20} aria-hidden="true" />
-          </a>
-        </Reveal>
-        <Reveal>
-          <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="contact-option group">
-            <MapPin size={32} className="text-primary group-hover:text-primary-foreground" />
-            <h3 className="text-center font-heading text-lg">Visit Us</h3>
-            <p className="text-center text-sm text-muted-foreground group-hover:text-primary-foreground/80">Get directions</p>
-            <ArrowUpRight className="contact-arrow" size={20} aria-hidden="true" />
-          </a>
-        </Reveal>
-        <Reveal>
-          <div className="contact-option contact-qr">
-            <QRCode value={gymData.gym.bookTrial.whatsappLink} size={88} level="H" includeMargin={false} />
-            <h3 className="text-center font-heading text-lg">Quick Chat</h3>
-            <p className="text-center text-xs text-muted-foreground">Scan to start</p>
-          </div>
-        </Reveal>
-      </div>
-      <ArtReveal className="mt-14">
-        <div className="message-panel">
-          <h3 className="font-heading text-2xl">Send us a message</h3>
-          <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" className="mt-6 space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-semibold text-foreground">Your Name</label>
-              <input type="text" id="name" name="name" required className="mt-2 w-full border border-border bg-background px-4 py-3 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none" placeholder="Your full name" />
-            </div>
-            <div>
-              <label htmlFor="phone" className="block text-sm font-semibold text-foreground">Phone Number</label>
-              <input type="tel" id="phone" name="phone" required className="mt-2 w-full border border-border bg-background px-4 py-3 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none" placeholder="Your phone number" />
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-sm font-semibold text-foreground">Message</label>
-              <textarea id="message" name="message" required rows={5} className="mt-2 w-full border border-border bg-background px-4 py-3 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none" placeholder="Tell us what you're interested in..." />
-            </div>
-            <button type="submit" className="w-full bg-primary px-6 py-4 text-sm font-black uppercase tracking-wider text-primary-foreground transition-transform hover:-translate-y-0.5">Send Message</button>
-          </form>
-          <p className="mt-4 text-center text-xs text-muted-foreground">We typically respond within 2 hours during business hours.</p>
-        </div>
-      </ArtReveal>
-    </div>
-  </section> 
+const testimonials = [
+  ['Finally, a gym where I actually look forward to showing up. The coaches remember your name and your goals.', 'PRIYA K.'],
+  ['The group classes are absolute fire. I have more energy, more confidence, and my jeans fit better.', 'ARJUN R.'],
+  ['Global feels like a community, not a membership. Best training decision I have made in Mumbai.', 'MEERA S.'],
+]
+export function Testimonials() {
+  return <section className="testimonials-section section-space"><div className="shell"><div className="testimonial-heading"><p className="section-label">Member energy</p><h2 className="section-title">Good vibes<br />Real results</h2></div><div className="testimonials">{testimonials.map(([quote, name]) => <blockquote key={name}><p>“{quote}”</p><footer>{name}</footer></blockquote>)}</div></div></section>
 }
 
-export function Testimonials() { return <section className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><p className="eyebrow">MEMBER ENERGY</p><h2 className="section-title mt-4">GOOD VIBES<br /><span className="text-primary">REAL RESULTS</span></h2></Reveal><div className="mt-14 grid gap-4 md:grid-cols-3">{[['“Finally, a gym where I actually look forward to showing up. The coaches remember your name and your goals.”','PRIYA K.'],['“The group classes are absolute fire. I have more energy, more confidence, and my jeans fit better.”','ARJUN R.'],['“Global feels like a community, not a membership. Best training decision I have made in Mumbai.”','MEERA S.']].map(([quote,name])=><Reveal key={name}><blockquote className="border-l-2 border-primary bg-surface p-7"><p className="text-lg leading-8 text-foreground">{quote}</p><footer className="mt-8 font-mono text-sm font-bold tracking-widest text-primary">— {name}</footer></blockquote></Reveal>)}</div></div></section> }
+export function ContactUs() {
+  return <section id="contact" className="contact-section section-space"><div className="shell">
+    <div className="contact-heading"><div><p className="section-label">Get in touch</p><h2 className="section-title">Let's talk<br />We're here</h2></div><p>Reach out in whatever way works best for you. We'll get back to you faster than you can say "personal record."</p></div>
+    <div className="contact-layout"><div className="contact-options">
+      <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="contact-option"><MessageCircle aria-hidden="true" /><div><h3>WhatsApp</h3><p>{gym.contact.whatsapp}</p></div><ArrowUpRight aria-hidden="true" /></a>
+      <a href={`tel:${gym.contact.phone}`} className="contact-option"><Phone aria-hidden="true" /><div><h3>Call Us</h3><p>{gym.contact.phone}</p></div><ArrowUpRight aria-hidden="true" /></a>
+      <a href={`mailto:${gym.contact.email}`} className="contact-option"><Mail aria-hidden="true" /><div><h3>Email</h3><p>{gym.contact.email}</p></div><ArrowUpRight aria-hidden="true" /></a>
+      <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="contact-option"><MapPin aria-hidden="true" /><div><h3>Visit Us</h3><p>Get directions</p></div><ArrowUpRight aria-hidden="true" /></a>
+      <div className="contact-qr"><div className="qr-paper"><QRCode value={gym.bookTrial.whatsappLink} size={88} level="H" includeMargin={false} /></div><div><h3>Quick Chat</h3><p>Scan to start</p></div></div>
+    </div><div className="message-panel"><h3>Send us a message</h3><form action="https://formspree.io/f/YOUR_FORM_ID" method="POST"><div className="form-pair"><div><label htmlFor="name">Your Name</label><input type="text" id="name" name="name" autoComplete="name" required placeholder="Your full name" /></div><div><label htmlFor="phone">Phone Number</label><input type="tel" id="phone" name="phone" autoComplete="tel" required placeholder="Your phone number" /></div></div><div><label htmlFor="message">Message</label><textarea id="message" name="message" required rows={5} placeholder="Tell us what you're interested in..." /></div><button type="submit" className="button button-light">Send Message<ArrowUpRight size={18} aria-hidden="true" /></button></form><p>We typically respond within 2 hours during business hours.</p></div></div>
+  </div></section>
+}
 
-export function Footer() { 
-  return <footer className="bg-background py-14">
-    <div className="mx-auto grid max-w-7xl gap-8 px-5 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
-      <div>
-        <a href="#top" className="font-heading text-3xl">{gymData.gym.name}<span className="text-primary">.</span></a>
-        <p className="mt-4 max-w-xs text-sm leading-6 text-muted-foreground">{gymData.gym.tagline}</p>
-        <div className="mt-6 flex gap-4">
-          <a href={gymData.gym.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground transition-colors hover:text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg></a>
-          <a href={gymData.gym.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-muted-foreground transition-colors hover:text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.26 5 12 5 12 5s-6.26 0-7.82.42a2.5 2.5 0 0 0-1.76 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81a2.5 2.5 0 0 0 1.76 1.77C5.74 19 12 19 12 19s6.26 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81ZM10 15l5.2-3L10 9v6Z" clipRule="evenodd" /></svg></a>
-          <a href={gymData.gym.social.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground transition-colors hover:text-primary"><MessageCircle size={20} /></a>
-        </div>
-      </div>
-      <div>
-        <p className="eyebrow">QUICK LINKS</p>
-        <div className="mt-4 grid grid-cols-2 gap-3 text-sm text-muted-foreground">
-          {['About','Services','Gallery','Trainers','Contact'].map(x=><a key={x} href={`#${x.toLowerCase()}`} className="hover:text-primary">{x}</a>)}
-        </div>
-      </div>
-      <div>
-        <p className="eyebrow">FIND US</p>
-        <p className="mt-4 flex gap-3 text-sm leading-6 text-muted-foreground">
-          <MapPin size={18} className="shrink-0 text-primary" /> 
-          {gymData.gym.address.street},<br />{gymData.gym.address.area}, {gymData.gym.address.city} {gymData.gym.address.postcode}
-        </p>
-        <a href={gymData.gym.maps.googleMapsShareLink} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all">
-          Get Directions <ArrowUpRight size={16} />
-        </a>
-        <p className="mt-6 flex gap-3 text-sm text-muted-foreground">
-          <Phone size={16} className="text-primary" /> 
-          <a href={`tel:${gymData.gym.contact.phone}`} className="hover:text-primary">{gymData.gym.contact.phone}</a>
-        </p>
-      </div>
-      <div className="min-w-0">
-        <iframe
-          src={gymData.gym.maps.embedCode}
-          title={`${gymData.gym.name} location: ${gymData.gym.location}`}
-          className="h-48 w-full border border-border"
-          loading="lazy"
-          allowFullScreen
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-      </div>
-    </div>
-    <div className="mx-auto mt-14 max-w-7xl border-t border-border px-5 pt-5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground lg:px-8">{gymData.gym.copyright}</div>
-  </footer> 
+export function Footer() {
+  return <footer className="site-footer"><div className="shell"><div className="footer-top"><a href="#top" className="footer-wordmark">{gym.name}</a><p>{gym.tagline}</p></div><div className="footer-grid"><div><h2>Quick links</h2><nav aria-label="Footer navigation">{navigation.map(name => <a key={name} href={`#${name.toLowerCase()}`}>{name}</a>)}</nav></div><div><h2>Find us</h2><p>{gym.address.street},<br />{gym.address.area}, {gym.address.city} {gym.address.postcode}</p><a href={gym.maps.googleMapsShareLink} target="_blank" rel="noopener noreferrer" className="text-link">Get Directions<ArrowUpRight size={16} aria-hidden="true" /></a><a className="footer-phone" href={`tel:${gym.contact.phone}`}><Phone size={16} aria-hidden="true" />{gym.contact.phone}</a></div><iframe src={gym.maps.embedCode} title={`${gym.name} location: ${gym.location}`} loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade" /></div><div className="footer-bottom"><p>{gym.copyright}</p><div className="social-links"><a href={gym.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg></a><a href={gym.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.26 5 12 5 12 5s-6.26 0-7.82.42a2.5 2.5 0 0 0-1.76 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81a2.5 2.5 0 0 0 1.76 1.77C5.74 19 12 19 12 19s6.26 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81ZM10 15l5.2-3L10 9v6Z" clipRule="evenodd" /></svg></a><a href={gym.social.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><MessageCircle size={22} /></a></div></div></div></footer>
 }
 
 export function WhatsAppFloat() {
-  return <a href={whatsappLink} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-    <IconWhatsapp />
-  </a>
+  return <a href={whatsappLink} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" className="whatsapp-float"><IconWhatsapp /><span>Let's talk</span></a>
+}
+
+function IconWhatsapp({ size = 26 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.1 8.1 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-2-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.6 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z" /></svg>
 }
