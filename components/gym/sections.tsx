@@ -1,13 +1,19 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, MapPin, Phone, MessageCircle, Dumbbell, HeartPulse, Users, Sparkles, Zap, ShieldCheck, ChevronRight, ChevronLeft, Share2, Mail } from 'lucide-react'
 import QRCode from 'qrcode.react'
+import type { LucideIcon } from 'lucide-react'
 import { useRef } from 'react'
 import gymData from '@/data/gym.json'
 
 function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return <motion.div className={className} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: .6 }}>{children}</motion.div>
+}
+
+function ArtReveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  const reducedMotion = useReducedMotion()
+  return <motion.div className={className} initial={false} whileInView={reducedMotion ? { opacity: 1, y: 0 } : { opacity: [0.65, 1], y: [12, 0] }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: .45 }}>{children}</motion.div>
 }
 
 const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gymData.gym.address.formatted)}`
@@ -51,9 +57,9 @@ export function Marquee() {
   return <div className="overflow-hidden border-y border-border bg-surface py-3" aria-label={tickerItems.join(', ')}><div className="flex w-max animate-marquee gap-10 whitespace-nowrap" aria-hidden="true">{items.map((item, index) => <span key={index} className="flex items-center gap-10 font-mono text-xs font-bold uppercase tracking-[.3em] text-muted-foreground">{item}<span className="text-primary">◆</span></span>)}</div></div>
 }
 
-export function About() { return <section id="about" className="relative overflow-hidden bg-surface py-24 lg:py-32"><div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-2 lg:items-center lg:px-8"><Reveal><div className="relative"><img className="h-[430px] w-full object-cover grayscale" src="/media/indian-gym-man.jpg" alt="Indian member lifting a dumbbell in a gym" /><div className="absolute -bottom-4 -right-4 bg-primary p-5 font-heading text-4xl leading-none tracking-[.025em] text-primary-foreground">NO<br />EXCUSES</div></div></Reveal><Reveal><p className="eyebrow text-lg">THE GLOBAL WAY</p><h2 className="section-title mt-4">TRAIN HARD<br /><span className="text-primary">LIVE LOUD</span></h2><p className="mt-7 max-w-lg text-muted-foreground leading-7">Global Gym is more than a place to lift. We built a seriously fun training community where big energy meets smart programming, and every member has a reason to come back tomorrow.</p><p className="mt-4 max-w-lg text-muted-foreground leading-7">No intimidation. No ego. Just good people, great coaching, and the kind of results you can feel.</p><a href="#services" className="mt-8 inline-flex items-center gap-2 font-bold uppercase tracking-widest text-primary">What we do <ChevronRight size={17} /></a></Reveal></div></section> }
+export function About() { return <section id="about" className="relative overflow-hidden bg-surface py-24 lg:py-32"><div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-2 lg:items-center lg:px-8"><Reveal><div className="relative"><img className="h-[430px] w-full object-cover object-[center_65%]" src="/media/gym-battle-ropes.jpg" alt="Indian athlete training with battle ropes in a gym" /><div className="absolute -bottom-4 -right-4 bg-primary p-5 font-heading text-4xl leading-none tracking-[.025em] text-primary-foreground">NO<br />EXCUSES</div></div></Reveal><Reveal><p className="eyebrow text-lg">THE GLOBAL WAY</p><h2 className="section-title mt-4">TRAIN HARD<br /><span className="text-primary">LIVE LOUD</span></h2><p className="mt-7 max-w-lg text-muted-foreground leading-7">Global Gym is more than a place to lift. We built a seriously fun training community where big energy meets smart programming, and every member has a reason to come back tomorrow.</p><p className="mt-4 max-w-lg text-muted-foreground leading-7">No intimidation. No ego. Just good people, great coaching, and the kind of results you can feel.</p><a href="#services" className="mt-8 inline-flex items-center gap-2 font-bold uppercase tracking-widest text-primary">What we do <ChevronRight size={17} /></a></Reveal></div></section> }
 
-const services = [[Dumbbell,'Strength Training','Machines, free weights, and a plan that gets you stronger.'],[HeartPulse,'Cardio','Build your engine with treadmills, cycles, and high-intensity conditioning.'],[Users,'Group Classes','Big energy, loud music, zero judgement. Find your people.'],[ShieldCheck,'Personal Training','One-on-one coaching that makes every rep count.'],[Zap,'Zumba','Dance, sweat, and forget you are working out.'],[Sparkles,'Spa & Recovery','Reset hard with recovery zones built for your next session.']]
+const services: [LucideIcon, string, string][] = [[Dumbbell,'Strength Training','Machines, free weights, and a plan that gets you stronger.'],[HeartPulse,'Cardio','Build your engine with treadmills, cycles, and high-intensity conditioning.'],[Users,'Group Classes','Big energy, loud music, zero judgement. Find your people.'],[ShieldCheck,'Personal Training','One-on-one coaching that makes every rep count.'],[Zap,'Zumba','Dance, sweat, and forget you are working out.'],[Sparkles,'Spa & Recovery','Reset hard with recovery zones built for your next session.']]
 export function Services() { return <section id="services" className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><p className="eyebrow">THE PLAYBOOK</p><h2 className="section-title mt-4">EVERY WAY<br /><span className="text-primary">TO MOVE</span></h2></Reveal><div className="mt-14 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">{services.map(([Icon,title,desc],i) => <Reveal key={title}><article className="group min-h-60 bg-background p-7 transition-colors hover:bg-surface"><div className="mb-12 flex items-start justify-between"><Icon className="text-primary" size={29} strokeWidth={1.5} /><span className="font-mono text-xs text-muted-foreground">0{i+1}</span></div><h3 className="font-heading text-3xl tracking-wide text-foreground">{title as string}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{desc as string}</p></article></Reveal>)}</div></div></section> }
 
 const gallery = [
@@ -64,7 +70,7 @@ const gallery = [
   { src: '/media/gym-training-kochi.jpg', alt: 'Young athlete preparing to train in a Kochi gym' },
   { src: '/media/indian-gym-man.jpg', alt: 'Indian member working out with a dumbbell' },
 ]
-export function Gallery() { return <section id="gallery" className="bg-surface py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><div className="flex items-end justify-between"><div><p className="eyebrow">THE FLOOR</p><h2 className="section-title mt-4">SEE YOU<br /><span className="text-primary">INSIDE</span></h2></div><span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground sm:block">Scroll / Sweat / Repeat</span></div></Reveal><div className="mt-14 grid grid-cols-2 gap-3 md:grid-cols-3">{gallery.map(({src,alt},i) => <Reveal key={src} className={i===0 || i===5 ? 'col-span-2' : ''}><motion.img className={`w-full object-cover grayscale transition-all duration-500 hover:grayscale-0 ${i===0 || i===5 ? 'h-72 md:h-96' : 'h-56 md:h-72'}`} src={src} alt={alt} whileHover={{ scale: 1.02 }} /></Reveal>)}</div></div></section> }
+export function Gallery() { return <section id="gallery" className="gallery-section bg-surface py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">THE FLOOR</p><h2 className="section-title mt-4">SEE YOU<br /><span className="text-primary">INSIDE</span></h2></div><span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground sm:block">Scroll / Sweat / Repeat</span></div></ArtReveal><div className="gallery-layout">{gallery.map(({src,alt},i) => <ArtReveal key={src} className={`gallery-frame gallery-frame-${i}`}><img loading="lazy" decoding="async" src={src} alt={alt} /><span className="gallery-number" aria-hidden="true">0{i+1} / THE FLOOR</span></ArtReveal>)}</div></div></section> }
 
 const trainers = [
   ['Vineet Mankani','Strength & Conditioning','/media/gym-training-kochi.jpg'],
@@ -76,12 +82,13 @@ const trainers = [
 ]
 export function Trainers() { 
   const scrollRef = useRef<HTMLDivElement>(null)
+  const reducedMotion = useReducedMotion()
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: 'smooth' })
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: reducedMotion ? 'auto' : 'smooth' })
     }
   }
-  return <section id="trainers" className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><div className="flex items-end justify-between"><div><p className="eyebrow">THE CREW</p><h2 className="section-title mt-4">MEET YOUR<br /><span className="text-primary">COACHES</span></h2></div><div className="hidden gap-2 lg:flex"><button onClick={() => scroll('left')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll left"><ChevronLeft size={20} /></button><button onClick={() => scroll('right')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll right"><ChevronRight size={20} /></button></div></div></Reveal><div className="mt-14 overflow-hidden"><div ref={scrollRef} className="flex gap-6 overflow-x-auto scroll-smooth pb-4 md:gap-8">{trainers.map(([name,specialty,src]) => <Reveal key={name} className="shrink-0 w-72"><article><img className="aspect-4/5 w-full object-cover grayscale transition-all hover:grayscale-0" src={src} alt={`Stock portrait representing ${name}, ${specialty}`} /><h3 className="mt-5 font-heading text-2xl tracking-wide">{name}</h3><p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-widest text-primary">{specialty}</p></article></Reveal>)}</div></div></div></section>
+  return <section id="trainers" className="trainers-section py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">THE CREW</p><h2 className="section-title mt-4">MEET YOUR<br /><span className="text-primary">COACHES</span></h2></div><div className="hidden gap-2 lg:flex"><button onClick={() => scroll('left')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll left"><ChevronLeft size={20} /></button><button onClick={() => scroll('right')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label="Scroll right"><ChevronRight size={20} /></button></div></div></ArtReveal><div className="mt-14 overflow-hidden"><div ref={scrollRef} className="coach-track flex gap-6 overflow-x-auto pb-4 md:gap-8" tabIndex={0} aria-label="Coaches; scroll to see more">{trainers.map(([name,specialty,src]) => <ArtReveal key={name} className="shrink-0 w-72"><article><img loading="lazy" decoding="async" className="aspect-4/5 w-full object-cover grayscale transition-all hover:grayscale-0" src={src} alt={`Stock portrait representing ${name}, ${specialty}`} /><h3 className="mt-5 font-heading text-2xl tracking-wide">{name}</h3><p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-widest text-primary">{specialty}</p></article></ArtReveal>)}</div></div></div></section>
 }
 
 export function ContactUs() { 
@@ -129,8 +136,8 @@ export function ContactUs() {
           </div>
         </Reveal>
       </div>
-      <Reveal className="mt-14">
-        <div className="rounded-lg border border-border bg-background p-8 md:p-12">
+      <ArtReveal className="mt-14">
+        <div className="message-panel">
           <h3 className="font-heading text-2xl">Send us a message</h3>
           <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" className="mt-6 space-y-4">
             <div>
@@ -149,22 +156,12 @@ export function ContactUs() {
           </form>
           <p className="mt-4 text-center text-xs text-muted-foreground">We typically respond within 2 hours during business hours.</p>
         </div>
-      </Reveal>
+      </ArtReveal>
     </div>
   </section> 
 }
 
 export function Testimonials() { return <section className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><p className="eyebrow">MEMBER ENERGY</p><h2 className="section-title mt-4">GOOD VIBES<br /><span className="text-primary">REAL RESULTS</span></h2></Reveal><div className="mt-14 grid gap-4 md:grid-cols-3">{[['“Finally, a gym where I actually look forward to showing up. The coaches remember your name and your goals.”','PRIYA K.'],['“The group classes are absolute fire. I have more energy, more confidence, and my jeans fit better.”','ARJUN R.'],['“Global feels like a community, not a membership. Best training decision I have made in Mumbai.”','MEERA S.']].map(([quote,name])=><Reveal key={name}><blockquote className="border-l-2 border-primary bg-surface p-7"><p className="text-lg leading-8 text-foreground">{quote}</p><footer className="mt-8 font-mono text-[10px] font-bold tracking-widest text-primary">— {name}</footer></blockquote></Reveal>)}</div></div></section> }
-
-export function CTA() { 
-  return <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground lg:py-28">
-    <div className="absolute inset-0 opacity-10">
-      <div className="absolute h-40 w-40 rounded-full bg-primary-foreground blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 h-60 w-60 rounded-full bg-primary-foreground blur-3xl"></div>
-    </div>
-    <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-5 lg:flex-row lg:items-end lg:justify-between lg:px-8"><Reveal><p className="font-mono text-xs font-bold uppercase tracking-[.3em] opacity-75">YOUR NEXT REP STARTS HERE</p><h2 className="mt-4 max-w-3xl font-heading text-6xl leading-[.85] tracking-[.025em] lg:text-8xl">READY TO<br />HAVE SOME FUN?</h2></Reveal><a href={gymData.gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-3 border border-primary-foreground/50 px-6 py-4 text-sm font-black uppercase tracking-wider transition-all hover:bg-primary-foreground hover:text-primary"><MessageCircle size={18} /> Book a free trial</a></div>
-  </section> 
-}
 
 export function Footer() { 
   return <footer className="bg-background py-14">
@@ -198,6 +195,16 @@ export function Footer() {
           {['About','Services','Gallery','Trainers','Contact'].map(x=><a key={x} href={`#${x.toLowerCase()}`} className="hover:text-primary">{x}</a>)}
         </div>
       </div>
+    </div>
+    <div className="mx-auto mt-10 max-w-7xl px-5 lg:px-8">
+      <iframe
+        src={gymData.gym.maps.embedCode}
+        title={`${gymData.gym.name} location: ${gymData.gym.location}`}
+        className="h-64 w-full border border-border sm:h-80"
+        loading="lazy"
+        allowFullScreen
+        referrerPolicy="no-referrer-when-downgrade"
+      />
     </div>
     <div className="mx-auto mt-14 max-w-7xl border-t border-border px-5 pt-5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground lg:px-8">{gymData.gym.copyright}</div>
   </footer> 

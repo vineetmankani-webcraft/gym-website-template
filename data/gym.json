@@ -22,7 +22,7 @@
     },
     "maps": {
       "googleMapsShareLink": "https://maps.app.goo.gl/RCity-Ghatkopar",
-      "embedCode": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.8202305747937!2d72.92279!3d19.122833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c7c7c7c7c7c7%3A0x123456789!2sR%20City%20Mall%20Ghatkopar!5e0!3m2!1sen!2sin!4v123456"
+      "embedCode": "https://www.google.com/maps?q=R%20City%20Mall%2C%20Ghatkopar%20West%2C%20Mumbai&output=embed"
     },
     "bookTrial": {
       "message": "Hi! I'd like to book a free trial class.",
