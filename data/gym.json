@@ -8,7 +8,8 @@
       "area": "Ghatkopar West",
       "city": "Mumbai",
       "postcode": "400086",
-      "formatted": "2nd Floor, R City Mall, Ghatkopar West, Mumbai 400086"
+      "formatted": "2nd Floor, R City Mall, Ghatkopar West, Mumbai 400086",
+      "footerLines": ["2nd Floor, R City Mall,", "Ghatkopar West, Mumbai 400086"]
     },
     "contact": {
       "whatsapp": "+919876543210",
@@ -21,6 +22,7 @@
       "whatsapp": "https://wa.me/919876543210"
     },
     "maps": {
+      "directionsLink": "https://www.google.com/maps/search/?api=1&query=2nd%20Floor%2C%20R%20City%20Mall%2C%20Ghatkopar%20West%2C%20Mumbai%20400086",
       "googleMapsShareLink": "https://maps.app.goo.gl/RCity-Ghatkopar",
       "embedCode": "https://www.google.com/maps?q=R%20City%20Mall%2C%20Ghatkopar%20West%2C%20Mumbai&output=embed"
     },
