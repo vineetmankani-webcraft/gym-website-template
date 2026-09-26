@@ -9,8 +9,9 @@ export default function Preview() {
       if (event.origin !== location.origin || event.source !== window.parent || event.data?.type !== 'gym-preview') return
       const result = snapshotSchema.safeParse(event.data.snapshot)
       if (!result.success) return
+      const uploadTokens = event.data.uploadTokens && typeof event.data.uploadTokens === 'object' ? event.data.uploadTokens as Record<string, unknown> : {}
       const paths = new Set(result.data.media.map(m => m.path))
-      const map = (v: unknown): unknown => typeof v === 'string' && paths.has(v) ? `/api/admin/media?path=${encodeURIComponent(v)}` : Array.isArray(v) ? v.map(map) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, map(x)])) : v
+      const map = (v: unknown): unknown => typeof v === 'string' && paths.has(v) ? typeof uploadTokens[v] === 'string' ? `/api/admin/media?upload=${encodeURIComponent(uploadTokens[v])}` : `/api/admin/media?path=${encodeURIComponent(v)}` : Array.isArray(v) ? v.map(map) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, map(x)])) : v
       setSnapshot({ ...result.data, content: map(result.data.content) as Snapshot['content'] })
     }
     const stopSubmit = (e: Event) => e.preventDefault()

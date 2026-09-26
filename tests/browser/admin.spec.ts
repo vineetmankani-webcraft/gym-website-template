@@ -13,13 +13,12 @@ async function mockApi(page: Page, options: { signedIn?: boolean; interrupted?: 
     const reply = (data: unknown, status = 200) => route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(data) })
     if (endpoint === 'login') { const body = request.postDataJSON(); if (body.password !== 'test-password') return reply({ error: 'Invalid username or password' }, 401); signedIn = true; return reply({ csrf: 'csrf', expiresAt: Date.now() + 28800000 }) }
     if (!signedIn) return reply({ error: 'Sign in to continue' }, 401)
-    if (endpoint === 'session') return reply({ csrf: 'csrf', expiresAt: Date.now() + 28800000, environment: 'preview' })
+    if (endpoint === 'session') return reply({ csrf: 'csrf', expiresAt: Date.now() + 28800000 })
     if (endpoint === 'logout') { signedIn = false; return reply({ ok: true }) }
     if (endpoint === 'content') return reply({ snapshot: saved, revision })
-    if (endpoint === 'deployment') return reply({ state: 'live', message: 'Preview deployed', url: 'https://example.test' })
     if (endpoint === 'media') { const file = url.searchParams.get('path')!; const source = fs.existsSync(`public${file}`) ? `public${file}` : 'public/media/hero-gym.jpg'; return route.fulfill({ contentType: source.endsWith('.mp4') ? 'video/mp4' : 'image/jpeg', body: fs.readFileSync(source) }) }
     if (endpoint === 'history') return reply([{ revision: 'a'.repeat(40), message: 'Original content', date: '2026-09-26T00:00:00Z' }, { revision, message: 'Updated content', date: '2026-09-26T01:00:00Z' }])
-    if (endpoint === 'upload') return reply({ id: 'asset-upload', path: '/media/asset-upload.jpg', name: 'New photograph.jpg', type: 'image/jpeg', size: 500 }, 201)
+    if (endpoint === 'upload') return reply({ media: { id: 'asset-upload', path: '/media/asset-upload.jpg', name: 'New photograph.jpg', type: 'image/jpeg', size: 500 }, uploadToken: 'mock-upload-token' }, 201)
     if (endpoint === 'save' || endpoint === 'restore') {
       const body = request.postDataJSON(); operations.push(body.operationId)
       if (options.interrupted && operations.length === 1) return route.abort('failed')

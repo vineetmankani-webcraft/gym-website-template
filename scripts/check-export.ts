@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
-const forbiddenNames = ['ADMIN_PASSWORD_HASH', 'GITHUB_PRIVATE_KEY', 'CLOUDFLARE_API_TOKEN']
-const secrets = ['ADMIN_PASSWORD_HASH', 'GITHUB_PRIVATE_KEY', 'CLOUDFLARE_API_TOKEN'].map(k => process.env[k]).filter((v): v is string => !!v && v.length > 8)
+const forbiddenNames = ['ADMIN_PASSWORD', 'GITHUB_TOKEN']
+const secrets = ['ADMIN_PASSWORD', 'GITHUB_TOKEN'].map(k => process.env[k]).filter((v): v is string => !!v && v.length > 8)
 function check(dir: string) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const file = path.join(dir, entry.name)

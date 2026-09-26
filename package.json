@@ -9,15 +9,12 @@
     "typecheck": "tsc --noEmit",
     "validate:content": "tsx scripts/validate-content.ts",
     "check:export": "tsx scripts/check-export.ts",
-    "admin:password": "tsx scripts/password.ts",
     "dev:admin": "wrangler pages dev out --port 8788",
-    "db:local": "wrangler d1 migrations apply ADMIN_DB --local",
     "test": "vitest run",
     "test:browser": "playwright test"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
-    "@noble/hashes": "^2.4.0",
     "@vercel/analytics": "1.6.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -39,7 +36,6 @@
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "miniflare": "^5.20260925.0-alpha",
     "postcss": "^8.5",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
