@@ -1,0 +1,114 @@
+[
+  {
+    "id": "asset-1",
+    "path": "/media/about-powerlift.jpg",
+    "name": "about-powerlift.jpg",
+    "type": "image/jpeg",
+    "size": 76369
+  },
+  {
+    "id": "asset-2",
+    "path": "/media/coach-woman-activewear.jpg",
+    "name": "coach-woman-activewear.jpg",
+    "type": "image/jpeg",
+    "size": 116982
+  },
+  {
+    "id": "asset-3",
+    "path": "/media/coach-woman-barbell-goa.jpg",
+    "name": "coach-woman-barbell-goa.jpg",
+    "type": "image/jpeg",
+    "size": 147153
+  },
+  {
+    "id": "asset-4",
+    "path": "/media/coach-woman-hydration.jpg",
+    "name": "coach-woman-hydration.jpg",
+    "type": "image/jpeg",
+    "size": 175543
+  },
+  {
+    "id": "asset-5",
+    "path": "/media/gym-battle-ropes.jpg",
+    "name": "gym-battle-ropes.jpg",
+    "type": "image/jpeg",
+    "size": 189394
+  },
+  {
+    "id": "asset-6",
+    "path": "/media/gym-calisthenics.jpg",
+    "name": "gym-calisthenics.jpg",
+    "type": "image/jpeg",
+    "size": 152032
+  },
+  {
+    "id": "asset-7",
+    "path": "/media/gym-dumbbells-delhi.jpg",
+    "name": "gym-dumbbells-delhi.jpg",
+    "type": "image/jpeg",
+    "size": 274032
+  },
+  {
+    "id": "asset-8",
+    "path": "/media/gym-training-kochi.jpg",
+    "name": "gym-training-kochi.jpg",
+    "type": "image/jpeg",
+    "size": 113619
+  },
+  {
+    "id": "asset-9",
+    "path": "/media/hero-gym.jpg",
+    "name": "hero-gym.jpg",
+    "type": "image/jpeg",
+    "size": 255626
+  },
+  {
+    "id": "asset-10",
+    "path": "/media/hero-training.mp4",
+    "name": "hero-training.mp4",
+    "type": "video/mp4",
+    "size": 6414027
+  },
+  {
+    "id": "asset-11",
+    "path": "/media/hero.mp4",
+    "name": "hero.mp4",
+    "type": "video/mp4",
+    "size": 1829869
+  },
+  {
+    "id": "asset-12",
+    "path": "/media/indian-gym-man.jpg",
+    "name": "indian-gym-man.jpg",
+    "type": "image/jpeg",
+    "size": 227439
+  },
+  {
+    "id": "asset-13",
+    "path": "/icon.svg",
+    "name": "icon.svg",
+    "type": "image/svg+xml",
+    "size": 1329
+  },
+  {
+    "id": "asset-14",
+    "path": "/icon-light-32x32.png",
+    "name": "icon-light-32x32.png",
+    "type": "image/png",
+    "size": 566
+  },
+  {
+    "id": "asset-15",
+    "path": "/icon-dark-32x32.png",
+    "name": "icon-dark-32x32.png",
+    "type": "image/png",
+    "size": 585
+  },
+  {
+    "id": "asset-16",
+    "path": "/apple-icon.png",
+    "name": "apple-icon.png",
+    "type": "image/png",
+    "size": 2626
+  }
+]
