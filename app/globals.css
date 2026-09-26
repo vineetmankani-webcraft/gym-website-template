@@ -46,6 +46,8 @@
 .section-title { margin: 0; font: 400 clamp(52px, 5.8vw, 88px)/1.02 var(--display); letter-spacing: .015em; text-transform: uppercase; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 22px; min-height: 52px; padding: 16px 24px; border: 0; background: var(--primary); color: #ffffff; font-size: 14px; font-weight: 700; transition: background-color .2s, color .2s; }
 .button:hover { background: #bd171d; }
+.button > svg { transition: transform .2s ease; }
+.button:hover > svg, .button:focus-visible > svg { transform: translate(2px, -2px); }
 .button-light { background: var(--primary); color: #ffffff; }
 .button-light:hover { background: #bd171d; color: #ffffff; }
 .button-small { min-height: 44px; padding: 12px 18px; font-size: 13px; gap: 12px; }
@@ -90,7 +92,8 @@
 .contact-option:hover { background: #ffffff0d; }
 .contact-option h3, .contact-qr h3 { margin: 0 0 6px; font-size: 18px; font-weight: 700; }
 .contact-option p, .contact-qr p { margin: 0; color: var(--muted-foreground); font-size: 14px; overflow-wrap: anywhere; }
-.contact-option > svg:last-child { width: 20px; }
+.contact-option > svg:last-child { width: 20px; transition: transform .2s ease; }
+.contact-option:hover > svg:last-child, .contact-option:focus-visible > svg:last-child { transform: translate(2px, -2px); }
 .contact-qr { display: flex; gap: 24px; align-items: center; margin-top: 28px; }
 .qr-paper { background: #ffffff; padding: 10px; }
 .message-panel { background: var(--surface); border: 1px solid var(--border); padding: clamp(24px, 3.5vw, 50px); border-radius: 6px; }
@@ -122,9 +125,9 @@
 .social-links { display: flex; gap: 10px; padding-right: 150px; }
 .social-links a { display: grid; place-items: center; width: 44px; height: 44px; }
 .social-links a:hover { color: var(--foreground); }
-.whatsapp-float { position: fixed; bottom: 22px; right: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 12px 18px; border-radius: 32px; background: var(--raised); color: var(--foreground); border: 1px solid var(--border); box-shadow: 0 4px 18px #00000030; transition: background-color .2s; }
+.whatsapp-float { position: fixed; bottom: 22px; right: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 12px 18px; border-radius: 32px; background: var(--raised); color: var(--foreground); border: 1px solid var(--border); box-shadow: 0 4px 18px #00000030; transition: background-color .2s, transform .2s; }
 .whatsapp-float span { font-size: 13px; font-weight: 700; }
-.whatsapp-float:hover { background: #303235; }
+.whatsapp-float:hover { background: #303235; transform: translateY(-2px); }
 @media (max-width: 1199px) {
   .footer-top { flex-direction: column; align-items: flex-start; }
 }
@@ -221,4 +224,7 @@
   .animate-marquee { animation: none; }
   .gallery-section .gallery-frame img { transition: none; }
   .gallery-section .gallery-frame:hover img { transform: none; }
+  .hero-primary-action:hover,
+  .contact-option > svg:last-child, .contact-option:hover > svg:last-child, .contact-option:focus-visible > svg:last-child,
+  .button > svg, .button:hover > svg, .button:focus-visible > svg, .whatsapp-float:hover { transform: none; }
 }

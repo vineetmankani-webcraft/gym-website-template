@@ -11,8 +11,9 @@ import gymData from '@/data/gym.json'
 const gym = gymData.gym
 const navigation = content.navigation.links
 
-function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return <motion.div className={className} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: .6 }}>{children}</motion.div>
+function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const reducedMotion = useReducedMotion()
+  return <motion.div className={className} initial={reducedMotion ? false : { opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: reducedMotion ? 0 : .45, delay: reducedMotion ? 0 : delay, ease: 'easeOut' }}>{children}</motion.div>
 }
 
 function ArtReveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -103,11 +104,13 @@ export function Hero() {
     <div className="relative mx-auto w-full max-w-7xl px-5 pb-20 pt-36 lg:px-8 lg:pb-28">
       <Reveal>
         <h1 className="max-w-4xl font-heading text-[clamp(4.5rem,13vw,10.5rem)] leading-[.83] tracking-[.015em] text-foreground">{content.hero.headline.first}<br /><span className="text-primary">{content.hero.headline.accent}</span> {content.hero.headline.last}</h1>
+      </Reveal>
+      <Reveal delay={.1}>
         <p className="single-line-tagline mt-8 text-base leading-7 text-muted-foreground" tabIndex={0}>{gym.tagline}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <a href={gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-primary px-6 py-4 text-sm font-black uppercase tracking-wider text-primary-foreground transition-transform hover:-translate-y-1">{content.hero.primaryAction.label}<ArrowUpRight size={17} /></a>
-          <a href={content.hero.secondaryAction.href} className="inline-flex items-center gap-2 border border-foreground/40 px-6 py-4 text-sm font-black uppercase tracking-wider text-foreground hover:border-primary hover:text-primary">{content.hero.secondaryAction.label}</a>
-        </div>
+      </Reveal>
+      <Reveal className="mt-8 flex flex-wrap gap-3" delay={.18}>
+        <a href={gym.bookTrial.whatsappLink} target="_blank" rel="noopener noreferrer" className="hero-primary-action inline-flex items-center gap-2 bg-primary px-6 py-4 text-sm font-black uppercase tracking-wider text-primary-foreground transition-transform hover:-translate-y-1">{content.hero.primaryAction.label}<ArrowUpRight size={17} /></a>
+        <a href={content.hero.secondaryAction.href} className="inline-flex items-center gap-2 border border-foreground/40 px-6 py-4 text-sm font-black uppercase tracking-wider text-foreground hover:border-primary hover:text-primary">{content.hero.secondaryAction.label}</a>
       </Reveal>
     </div>
     <div className="absolute bottom-0 right-0 hidden h-20 w-2/5 skew-x-[-25deg] translate-x-1/4 bg-primary lg:block" />
@@ -121,8 +124,8 @@ export function Marquee() {
 
 export function About() {
   return <section id={content.about.id} className="about-section section-space"><div className="shell about-layout">
-    <div className="about-photo"><img loading="lazy" decoding="async" src={content.about.image.src} alt={content.about.image.alt} /><p className="about-caption">{content.about.imageCaption}</p></div>
-    <div className="about-copy"><p className="section-label">{content.about.eyebrow}</p><h2 className="section-title">{content.about.headline[0]}<br />{content.about.headline[1]}</h2>{content.about.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}<a href={content.about.action.href} className="text-link">{content.about.action.label}<ChevronRight size={18} aria-hidden="true" /></a></div>
+    <ArtReveal className="about-photo"><img loading="lazy" decoding="async" src={content.about.image.src} alt={content.about.image.alt} /><p className="about-caption">{content.about.imageCaption}</p></ArtReveal>
+    <ArtReveal className="about-copy"><p className="section-label">{content.about.eyebrow}</p><h2 className="section-title">{content.about.headline[0]}<br />{content.about.headline[1]}</h2>{content.about.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}<a href={content.about.action.href} className="text-link">{content.about.action.label}<ChevronRight size={18} aria-hidden="true" /></a></ArtReveal>
   </div></section>
 }
 
