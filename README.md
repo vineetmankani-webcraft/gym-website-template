@@ -1,5 +1,11 @@
 # gym-website-trial
 
+## Website admin
+
+The `/admin` portal manages website content and media through Cloudflare Pages Functions. Setup, local development, credentials, isolated previews, and release checks are documented in [docs/ADMIN.md](docs/ADMIN.md).
+
+Use npm with `package-lock.json`: `npm ci`, `npm test`, and `npm run build`. The admin API needs Wrangler (`npm run dev:admin` after a build); `next dev` alone only runs the frontend.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
 
 ## Built with v0

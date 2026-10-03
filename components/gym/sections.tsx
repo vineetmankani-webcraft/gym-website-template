@@ -2,14 +2,10 @@
 
 import { motion, useReducedMotion, useScroll } from 'framer-motion'
 import { ArrowUpRight, MapPin, Phone, MessageCircle, Dumbbell, HeartPulse, Users, Sparkles, Zap, ShieldCheck, ChevronRight, ChevronLeft, Mail, Menu, X } from 'lucide-react'
-import QRCode from 'qrcode.react'
+import { QRCodeSVG as QRCode } from 'qrcode.react'
 import type { LucideIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import content from '@/data/content.json'
-import gymData from '@/data/gym.json'
-
-const gym = gymData.gym
-const navigation = content.navigation.links
+import { useSite } from './site-context'
 
 function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const reducedMotion = useReducedMotion()
@@ -21,14 +17,14 @@ function ArtReveal({ children, className = '' }: { children: React.ReactNode; cl
   return <motion.div className={className} initial={false} whileInView={reducedMotion ? { opacity: 1, y: 0 } : { opacity: [0.65, 1], y: [12, 0] }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: .45 }}>{children}</motion.div>
 }
 
-const mapsLink = gym.maps.directionsLink
-const whatsappLink = gym.social.whatsapp
 
 function IconWhatsapp({ size = 26 }: { size?: number }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.1 8.1 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-2-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.6 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z" /></svg>
 }
 
 export function Nav() {
+  const { content, gym, navigation, mapsLink } = useSite()
+
   const { scrollYProgress } = useScroll()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -53,7 +49,7 @@ export function Nav() {
     update()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(frame) }
-  }, [])
+  }, [navigation])
 
   useEffect(() => {
     if (!open) return
@@ -79,7 +75,7 @@ export function Nav() {
     <motion.div className="reading-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />
     <a href={`#${content.navigation.mainId}`} className="skip-link">{content.navigation.skipLabel}</a>
     <div className="header-inner shell">
-      <a href={`#${content.hero.id}`} className="wordmark" aria-label={`${gym.name}, ${content.navigation.homeLabelSuffix}`} onClick={() => setOpen(false)}><Dumbbell aria-hidden="true" /><span>{gym.name}</span></a>
+      <a href={`#${content.hero.id}`} className="wordmark" aria-label={`${gym.name}, ${content.navigation.homeLabelSuffix}`} onClick={() => setOpen(false)}><>{content.site.logo ? <img src={content.site.logo} alt="" style={{ width: 36, height: 36, objectFit: "contain" }} /> : <Dumbbell aria-hidden="true" />}</><span>{gym.name}</span></a>
       <nav className="desktop-nav" aria-label={content.navigation.desktopLabel} onMouseLeave={() => setHovered(null)}>
         {navigation.map(link => <a key={link.href} href={link.href} aria-current={active === link.href ? 'location' : undefined} onMouseEnter={() => setHovered(link.href)} onFocus={() => setHovered(link.href)} onBlur={() => setHovered(null)}>
           {(hovered ?? active) === link.href && <motion.span className="nav-indicator" layoutId="navigation-indicator" transition={{ duration: reducedMotion ? 0 : .2, ease: 'easeOut' }} />}
@@ -96,10 +92,12 @@ export function Nav() {
 }
 
 export function Hero() {
+  const { content, gym } = useSite()
+
   return <section id={content.hero.id} className="relative flex min-h-screen items-end overflow-hidden">
-    <video className="hero-video absolute inset-0 h-full w-full object-cover object-center opacity-60" autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
-      <source src={content.hero.video} type="video/mp4" />
-    </video>
+    {content.hero.video ? <video key={content.hero.video} poster={content.hero.poster || undefined} className="hero-video absolute inset-0 h-full w-full object-cover object-center opacity-60" autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
+      <source src={content.hero.video} type={content.hero.video.endsWith(".webm") ? "video/webm" : "video/mp4"} />
+    </video> : content.hero.poster && <img src={content.hero.poster} alt="" className="absolute inset-0 h-full w-full object-cover opacity-60" />}
     <div className="absolute inset-0 bg-linear-to-t from-background via-background/70 to-background/20" />
     <div className="relative mx-auto w-full max-w-7xl px-5 pb-20 pt-36 lg:px-8 lg:pb-28">
       <Reveal>
@@ -118,23 +116,33 @@ export function Hero() {
 }
 
 export function Marquee() {
+  const { content } = useSite()
+
   const items = [...content.marquee.items, ...content.marquee.items, ...content.marquee.items]
-  return <div className="overflow-hidden border-y border-border bg-surface py-3" aria-label={content.marquee.items.join(', ')}><div className="flex w-max animate-marquee gap-10 whitespace-nowrap" aria-hidden="true">{items.map((item, index) => <span key={index} className="flex items-center gap-10 font-mono text-xs font-bold uppercase tracking-[.3em] text-muted-foreground">{item}<span className="text-primary">{content.marquee.separator}</span></span>)}</div></div>
+  return <div className="overflow-hidden border-y border-border bg-surface py-3" aria-label={content.marquee.items.map(x => x.text).join(', ')}><div className="flex w-max animate-marquee gap-10 whitespace-nowrap" aria-hidden="true">{items.map((item, index) => <span key={index} className="flex items-center gap-10 font-mono text-xs font-bold uppercase tracking-[.3em] text-muted-foreground">{item.text}<span className="text-primary">{content.marquee.separator}</span></span>)}</div></div>
 }
 
 export function About() {
+  const { content } = useSite()
+
   return <section id={content.about.id} className="about-section section-space"><div className="shell about-layout">
-    <ArtReveal className="about-photo"><img loading="lazy" decoding="async" src={content.about.image.src} alt={content.about.image.alt} /><p className="about-caption">{content.about.imageCaption}</p></ArtReveal>
+    <ArtReveal className="about-photo"><img loading="lazy" decoding="async" src={content.about.image.src} alt={content.about.image.alt} style={{ objectPosition: content.about.image.position }} /><p className="about-caption">{content.about.imageCaption}</p></ArtReveal>
     <ArtReveal className="about-copy"><p className="section-label">{content.about.eyebrow}</p><h2 className="section-title">{content.about.headline[0]}<br />{content.about.headline[1]}</h2>{content.about.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}<a href={content.about.action.href} className="text-link">{content.about.action.label}<ChevronRight size={18} aria-hidden="true" /></a></ArtReveal>
   </div></section>
 }
 
 const serviceIcons: Record<string, LucideIcon> = { strength: Dumbbell, cardio: HeartPulse, classes: Users, personal: ShieldCheck, zumba: Zap, recovery: Sparkles }
-export function Services() { return <section id={content.services.id} className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><p className="eyebrow">{content.services.eyebrow}</p><h2 className="section-title mt-4">{content.services.headline[0]}<br /><span className="text-primary">{content.services.headline[1]}</span></h2></Reveal><div className="mt-14 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">{content.services.items.map((service,i) => { const Icon = serviceIcons[service.icon] ?? Dumbbell; return <Reveal key={service.title}><article className="group min-h-60 bg-background p-7 transition-colors hover:bg-surface"><div className="mb-12 flex items-start justify-between"><Icon className="text-primary" size={29} strokeWidth={1.5} /><span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, '0')}</span></div><h3 className="font-heading text-3xl tracking-wide text-foreground">{service.title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{service.description}</p></article></Reveal> })}</div></div></section> }
+export function Services() {
+  const { content } = useSite()
+ return <section id={content.services.id} className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><Reveal><p className="eyebrow">{content.services.eyebrow}</p><h2 className="section-title mt-4">{content.services.headline[0]}<br /><span className="text-primary">{content.services.headline[1]}</span></h2></Reveal><div className="mt-14 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">{content.services.items.map((service,i) => { const Icon = serviceIcons[service.icon] ?? Dumbbell; return <Reveal key={service.id}><article className="group min-h-60 bg-background p-7 transition-colors hover:bg-surface"><div className="mb-12 flex items-start justify-between"><Icon className="text-primary" size={29} strokeWidth={1.5} /><span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, '0')}</span></div><h3 className="font-heading text-3xl tracking-wide text-foreground">{service.title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{service.description}</p></article></Reveal> })}</div></div></section> }
 
-export function Gallery() { return <section id={content.gallery.id} className="gallery-section bg-surface py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">{content.gallery.eyebrow}</p><h2 className="section-title mt-4">{content.gallery.headline[0]}<br /><span className="text-primary">{content.gallery.headline[1]}</span></h2></div><span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground sm:block">{content.gallery.hint}</span></div></ArtReveal><div className="gallery-layout">{content.gallery.images.map(({src,alt},i) => <ArtReveal key={src} className={`gallery-frame gallery-frame-${i}`}><img loading="lazy" decoding="async" src={src} alt={alt} /><span className="gallery-number" aria-hidden="true">{String(i + 1).padStart(2, '0')}{content.gallery.imageCounterSuffix}</span></ArtReveal>)}</div></div></section> }
+export function Gallery() {
+  const { content } = useSite()
+ return <section id={content.gallery.id} className="gallery-section bg-surface py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">{content.gallery.eyebrow}</p><h2 className="section-title mt-4">{content.gallery.headline[0]}<br /><span className="text-primary">{content.gallery.headline[1]}</span></h2></div><span className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground sm:block">{content.gallery.hint}</span></div></ArtReveal><div className="gallery-layout">{content.gallery.images.map(({src,alt,id,position},i) => <ArtReveal key={id} className={`gallery-frame gallery-frame-${i}`}><img loading="lazy" decoding="async" src={src} alt={alt} style={{ objectPosition: position }} /><span className="gallery-number" aria-hidden="true">{String(i + 1).padStart(2, '0')}{content.gallery.imageCounterSuffix}</span></ArtReveal>)}</div></div></section> }
 
 export function Trainers() {
+  const { content } = useSite()
+
   const scrollRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
   const scroll = (direction: 'left' | 'right') => {
@@ -142,10 +150,12 @@ export function Trainers() {
       scrollRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: reducedMotion ? 'auto' : 'smooth' })
     }
   }
-  return <section id={content.trainers.id} className="trainers-section py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">{content.trainers.eyebrow}</p><h2 className="section-title mt-4">{content.trainers.headline[0]}<br /><span className="text-primary">{content.trainers.headline[1]}</span></h2></div><div className="hidden gap-2 lg:flex"><button onClick={() => scroll('left')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label={content.trainers.scrollLeftLabel}><ChevronLeft size={20} /></button><button onClick={() => scroll('right')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label={content.trainers.scrollRightLabel}><ChevronRight size={20} /></button></div></div></ArtReveal><div className="mt-14 overflow-hidden"><div ref={scrollRef} className="coach-track flex gap-6 overflow-x-auto pb-4 md:gap-8" tabIndex={0} aria-label={content.trainers.trackLabel}>{content.trainers.people.map(({name,specialty,src}) => <ArtReveal key={name} className="shrink-0 w-72"><article><img loading="lazy" decoding="async" className="aspect-4/5 w-full object-cover grayscale transition-all hover:grayscale-0" src={src} alt={content.trainers.portraitAltTemplate.replace('{name}', name).replace('{specialty}', specialty)} /><h3 className="mt-5 font-heading text-2xl tracking-wide">{name}</h3><p className="mt-1 font-mono text-xs font-bold uppercase tracking-widest text-primary">{specialty}</p></article></ArtReveal>)}</div></div></div></section>
+  return <section id={content.trainers.id} className="trainers-section py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8"><ArtReveal><div className="flex items-end justify-between"><div><p className="eyebrow">{content.trainers.eyebrow}</p><h2 className="section-title mt-4">{content.trainers.headline[0]}<br /><span className="text-primary">{content.trainers.headline[1]}</span></h2></div><div className="hidden gap-2 lg:flex"><button onClick={() => scroll('left')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label={content.trainers.scrollLeftLabel}><ChevronLeft size={20} /></button><button onClick={() => scroll('right')} className="border border-border p-3 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground" aria-label={content.trainers.scrollRightLabel}><ChevronRight size={20} /></button></div></div></ArtReveal><div className="mt-14 overflow-hidden"><div ref={scrollRef} className="coach-track flex gap-6 overflow-x-auto pb-4 md:gap-8" tabIndex={0} aria-label={content.trainers.trackLabel}>{content.trainers.people.map(({name,specialty,src,id,alt,position}) => <ArtReveal key={id} className="shrink-0 w-72"><article><img loading="lazy" decoding="async" className="aspect-4/5 w-full object-cover grayscale transition-all hover:grayscale-0" src={src} alt={alt} style={{ objectPosition: position }} /><h3 className="mt-5 font-heading text-2xl tracking-wide">{name}</h3><p className="mt-1 font-mono text-xs font-bold uppercase tracking-widest text-primary">{specialty}</p></article></ArtReveal>)}</div></div></div></section>
 }
 
 export function ContactUs() {
+  const { content, gym, mapsLink, whatsappLink } = useSite()
+
   return <section id={content.contact.id} className="contact-section section-space"><div className="shell">
     <div className="contact-heading"><div><p className="section-label">{content.contact.eyebrow}</p><h2 className="section-title">{content.contact.headline[0]}<br />{content.contact.headline[1]}</h2></div><p>{content.contact.intro}</p></div>
     <div className="contact-layout"><div className="contact-options">
@@ -159,13 +169,17 @@ export function ContactUs() {
 }
 
 export function Testimonials() {
-  return <section className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8">
+  const { content } = useSite()
+
+  return <section id={content.testimonials.id} className="py-24 lg:py-32"><div className="mx-auto max-w-7xl px-5 lg:px-8">
     <Reveal><p className="eyebrow">{content.testimonials.eyebrow}</p><h2 className="section-title mt-4">{content.testimonials.headline[0]}<br /><span className="text-primary">{content.testimonials.headline[1]}</span></h2></Reveal>
-    <div className="mt-14 grid gap-4 md:grid-cols-3">{content.testimonials.items.map(({quote,name}) => <Reveal key={name}><blockquote className="border-l-2 border-primary bg-surface p-7"><p className="text-lg leading-8 text-foreground">{quote}</p><footer className="mt-8 font-mono text-sm font-bold tracking-widest text-primary">{content.testimonials.attributionPrefix}{name}</footer></blockquote></Reveal>)}</div>
+    <div className="mt-14 grid gap-4 md:grid-cols-3">{content.testimonials.items.map(({quote,name,id}) => <Reveal key={id}><blockquote className="border-l-2 border-primary bg-surface p-7"><p className="text-lg leading-8 text-foreground">{quote}</p><footer className="mt-8 font-mono text-sm font-bold tracking-widest text-primary">{content.testimonials.attributionPrefix}{name}</footer></blockquote></Reveal>)}</div>
   </div></section>
 }
 
 export function Footer() {
+  const { content, gym, navigation } = useSite()
+
   return <footer className="site-footer"><div className="shell">
     <div className="footer-top"><a href={`#${content.hero.id}`} className="footer-wordmark">{gym.name}</a><p className="single-line-tagline" tabIndex={0}>{gym.tagline}</p></div>
     <div className="footer-grid">
@@ -182,5 +196,7 @@ export function Footer() {
 }
 
 export function WhatsAppFloat() {
+  const { content, whatsappLink } = useSite()
+
   return <a href={whatsappLink} target="_blank" rel="noopener noreferrer" aria-label={content.whatsappFloat.label} className="whatsapp-float"><IconWhatsapp /><span>{content.whatsappFloat.text}</span></a>
 }

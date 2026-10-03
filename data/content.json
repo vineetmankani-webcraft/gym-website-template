@@ -4,16 +4,73 @@
     "title": "Global Gym Ghatkopar",
     "description": "High-energy strength training, group classes, coaching, and recovery in Ghatkopar, Mumbai.",
     "generator": "v0.app",
-    "themeColor": "#101112"
+    "themeColor": "#101112",
+    "sharingImage": "/media/hero-gym.jpg",
+    "logo": "",
+    "favicon": "/icon.svg"
   },
+  "sections": [
+    {
+      "key": "hero",
+      "visible": true
+    },
+    {
+      "key": "marquee",
+      "visible": true
+    },
+    {
+      "key": "about",
+      "visible": true
+    },
+    {
+      "key": "services",
+      "visible": true
+    },
+    {
+      "key": "gallery",
+      "visible": true
+    },
+    {
+      "key": "trainers",
+      "visible": true
+    },
+    {
+      "key": "testimonials",
+      "visible": true
+    },
+    {
+      "key": "contact",
+      "visible": true
+    }
+  ],
   "navigation": {
     "mainId": "main",
     "links": [
-      { "label": "About", "href": "#about" },
-      { "label": "Services", "href": "#services" },
-      { "label": "Gallery", "href": "#gallery" },
-      { "label": "Trainers", "href": "#trainers" },
-      { "label": "Contact", "href": "#contact" }
+      {
+        "label": "About",
+        "href": "#about",
+        "id": "nav-1"
+      },
+      {
+        "label": "Services",
+        "href": "#services",
+        "id": "nav-2"
+      },
+      {
+        "label": "Gallery",
+        "href": "#gallery",
+        "id": "nav-3"
+      },
+      {
+        "label": "Trainers",
+        "href": "#trainers",
+        "id": "nav-4"
+      },
+      {
+        "label": "Contact",
+        "href": "#contact",
+        "id": "nav-5"
+      }
     ],
     "skipLabel": "Skip to content",
     "homeLabelSuffix": "home",
@@ -22,90 +79,276 @@
     "openLabel": "Open navigation",
     "closeLabel": "Close navigation",
     "directionsLabel": "Get directions to",
-    "reachOut": { "label": "Reach Out", "href": "#contact" }
+    "reachOut": {
+      "label": "Reach Out",
+      "href": "#contact"
+    }
   },
   "hero": {
     "id": "top",
     "video": "/media/hero-training.mp4",
-    "headline": { "first": "SERIOUSLY", "accent": "FUN", "last": "FITNESS" },
-    "primaryAction": { "label": "Book Free Trial" },
-    "secondaryAction": { "label": "Explore Programs", "href": "#services" }
+    "poster": "/media/hero-gym.jpg",
+    "headline": {
+      "first": "SERIOUSLY",
+      "accent": "FUN",
+      "last": "FITNESS"
+    },
+    "primaryAction": {
+      "label": "Book Free Trial"
+    },
+    "secondaryAction": {
+      "label": "Explore Programs",
+      "href": "#services"
+    }
   },
   "marquee": {
-    "items": ["STRENGTH", "CONDITIONING", "ZUMBA", "RECOVERY", "COMMUNITY", "RESULTS"],
+    "items": [
+      {
+        "id": "marquee-1",
+        "text": "STRENGTH"
+      },
+      {
+        "id": "marquee-2",
+        "text": "CONDITIONING"
+      },
+      {
+        "id": "marquee-3",
+        "text": "ZUMBA"
+      },
+      {
+        "id": "marquee-4",
+        "text": "RECOVERY"
+      },
+      {
+        "id": "marquee-5",
+        "text": "COMMUNITY"
+      },
+      {
+        "id": "marquee-6",
+        "text": "RESULTS"
+      }
+    ],
     "separator": "◆"
   },
   "about": {
     "id": "about",
-    "image": { "src": "/media/gym-battle-ropes.jpg", "alt": "Indian athlete training with battle ropes in a gym" },
+    "image": {
+      "src": "/media/gym-battle-ropes.jpg",
+      "alt": "Indian athlete training with battle ropes in a gym",
+      "position": "center"
+    },
     "imageCaption": "No excuses",
     "eyebrow": "THE GLOBAL WAY",
-    "headline": ["Train hard", "Live loud"],
+    "headline": [
+      "Train hard",
+      "Live loud"
+    ],
     "paragraphs": [
       "Global Gym is more than a place to lift. We built a seriously fun training community where big energy meets smart programming, and every member has a reason to come back tomorrow.",
       "No intimidation. No ego. Just good people, great coaching, and the kind of results you can feel."
     ],
-    "action": { "label": "What we do", "href": "#services" }
+    "action": {
+      "label": "What we do",
+      "href": "#services"
+    }
   },
   "services": {
     "id": "services",
     "eyebrow": "THE PLAYBOOK",
-    "headline": ["EVERY WAY", "TO MOVE"],
+    "headline": [
+      "EVERY WAY",
+      "TO MOVE"
+    ],
     "items": [
-      { "icon": "strength", "title": "Strength Training", "description": "Machines, free weights, and a plan that gets you stronger." },
-      { "icon": "cardio", "title": "Cardio", "description": "Build your engine with treadmills, cycles, and high-intensity conditioning." },
-      { "icon": "classes", "title": "Group Classes", "description": "Big energy, loud music, zero judgement. Find your people." },
-      { "icon": "personal", "title": "Personal Training", "description": "One-on-one coaching that makes every rep count." },
-      { "icon": "zumba", "title": "Zumba", "description": "Dance, sweat, and forget you are working out." },
-      { "icon": "recovery", "title": "Spa & Recovery", "description": "Reset hard with recovery zones built for your next session." }
+      {
+        "id": "service-1",
+        "icon": "strength",
+        "title": "Strength Training",
+        "description": "Machines, free weights, and a plan that gets you stronger."
+      },
+      {
+        "id": "service-2",
+        "icon": "cardio",
+        "title": "Cardio",
+        "description": "Build your engine with treadmills, cycles, and high-intensity conditioning."
+      },
+      {
+        "id": "service-3",
+        "icon": "classes",
+        "title": "Group Classes",
+        "description": "Big energy, loud music, zero judgement. Find your people."
+      },
+      {
+        "id": "service-4",
+        "icon": "personal",
+        "title": "Personal Training",
+        "description": "One-on-one coaching that makes every rep count."
+      },
+      {
+        "id": "service-5",
+        "icon": "zumba",
+        "title": "Zumba",
+        "description": "Dance, sweat, and forget you are working out."
+      },
+      {
+        "id": "service-6",
+        "icon": "recovery",
+        "title": "Spa & Recovery",
+        "description": "Reset hard with recovery zones built for your next session."
+      }
     ]
   },
   "gallery": {
     "id": "gallery",
     "eyebrow": "THE FLOOR",
-    "headline": ["SEE YOU", "INSIDE"],
+    "headline": [
+      "SEE YOU",
+      "INSIDE"
+    ],
     "hint": "Scroll / Sweat / Repeat",
     "imageCounterSuffix": " / THE FLOOR",
     "images": [
-      { "src": "/media/hero-gym.jpg", "alt": "Members training in a Chandigarh gym" },
-      { "src": "/media/gym-calisthenics.jpg", "alt": "Indian athlete doing a calisthenics hold" },
-      { "src": "/media/gym-battle-ropes.jpg", "alt": "Indian member training with battle ropes" },
-      { "src": "/media/gym-dumbbells-delhi.jpg", "alt": "Sikh member lifting dumbbells in a Delhi gym" },
-      { "src": "/media/gym-training-kochi.jpg", "alt": "Young athlete preparing to train in a Kochi gym" },
-      { "src": "/media/indian-gym-man.jpg", "alt": "Indian member working out with a dumbbell" }
+      {
+        "src": "/media/hero-gym.jpg",
+        "alt": "Members training in a Chandigarh gym",
+        "position": "center",
+        "id": "photo-1"
+      },
+      {
+        "src": "/media/gym-calisthenics.jpg",
+        "alt": "Indian athlete doing a calisthenics hold",
+        "position": "center",
+        "id": "photo-2"
+      },
+      {
+        "src": "/media/gym-battle-ropes.jpg",
+        "alt": "Indian member training with battle ropes",
+        "position": "center",
+        "id": "photo-3"
+      },
+      {
+        "src": "/media/gym-dumbbells-delhi.jpg",
+        "alt": "Sikh member lifting dumbbells in a Delhi gym",
+        "position": "center",
+        "id": "photo-4"
+      },
+      {
+        "src": "/media/gym-training-kochi.jpg",
+        "alt": "Young athlete preparing to train in a Kochi gym",
+        "position": "center",
+        "id": "photo-5"
+      },
+      {
+        "src": "/media/indian-gym-man.jpg",
+        "alt": "Indian member working out with a dumbbell",
+        "position": "center",
+        "id": "photo-6"
+      }
     ]
   },
   "trainers": {
     "id": "trainers",
     "eyebrow": "THE CREW",
-    "headline": ["MEET YOUR", "COACHES"],
+    "headline": [
+      "MEET YOUR",
+      "COACHES"
+    ],
     "scrollLeftLabel": "Scroll left",
     "scrollRightLabel": "Scroll right",
     "trackLabel": "Coaches; scroll to see more",
     "portraitAltTemplate": "Stock portrait representing {name}, {specialty}",
     "people": [
-      { "name": "Vineet Mankani", "specialty": "Strength & Conditioning", "src": "/media/gym-training-kochi.jpg" },
-      { "name": "Anaya Shah", "specialty": "Functional Training", "src": "/media/about-powerlift.jpg" },
-      { "name": "Vikram Singh", "specialty": "Performance Coach", "src": "/media/indian-gym-man.jpg" },
-      { "name": "Nisha Patil", "specialty": "Zumba & Mobility", "src": "/media/coach-woman-barbell-goa.jpg" },
-      { "name": "Arjun Mehta", "specialty": "Personal Training", "src": "/media/gym-dumbbells-delhi.jpg" },
-      { "name": "Rohan Desai", "specialty": "Calisthenics & Conditioning", "src": "/media/gym-calisthenics.jpg" }
+      {
+        "id": "trainer-1",
+        "name": "Vineet Mankani",
+        "specialty": "Strength & Conditioning",
+        "src": "/media/gym-training-kochi.jpg",
+        "alt": "Stock portrait representing Vineet Mankani, Strength & Conditioning",
+        "position": "center"
+      },
+      {
+        "id": "trainer-2",
+        "name": "Anaya Shah",
+        "specialty": "Functional Training",
+        "src": "/media/about-powerlift.jpg",
+        "alt": "Stock portrait representing Anaya Shah, Functional Training",
+        "position": "center"
+      },
+      {
+        "id": "item-91896acb-6dc4-4653-83b1-e37d4a94731c",
+        "name": "Jay Shah",
+        "specialty": "Personal Training",
+        "src": "/media/gym-calisthenics.jpg",
+        "alt": "Coach portrait",
+        "position": "center"
+      },
+      {
+        "id": "trainer-3",
+        "name": "Vikram Singh",
+        "specialty": "Performance Coach",
+        "src": "/media/indian-gym-man.jpg",
+        "alt": "Stock portrait representing Vikram Singh, Performance Coach",
+        "position": "center"
+      },
+      {
+        "id": "trainer-4",
+        "name": "Nisha Patil",
+        "specialty": "Zumba & Mobility",
+        "src": "/media/coach-woman-barbell-goa.jpg",
+        "alt": "Stock portrait representing Nisha Patil, Zumba & Mobility",
+        "position": "center"
+      },
+      {
+        "id": "trainer-5",
+        "name": "Arjun Mehta",
+        "specialty": "Personal Training",
+        "src": "/media/gym-dumbbells-delhi.jpg",
+        "alt": "Stock portrait representing Arjun Mehta, Personal Training",
+        "position": "center"
+      },
+      {
+        "id": "trainer-6",
+        "name": "Rohan Desai",
+        "specialty": "Calisthenics & Conditioning",
+        "src": "/media/gym-calisthenics.jpg",
+        "alt": "Stock portrait representing Rohan Desai, Calisthenics & Conditioning",
+        "position": "center"
+      }
     ]
   },
   "testimonials": {
+    "id": "testimonials",
     "eyebrow": "MEMBER ENERGY",
-    "headline": ["GOOD VIBES", "REAL RESULTS"],
+    "headline": [
+      "GOOD VIBES",
+      "REAL RESULTS"
+    ],
     "attributionPrefix": "— ",
     "items": [
-      { "quote": "“Finally, a gym where I actually look forward to showing up. The coaches remember your name and your goals.”", "name": "PRIYA K." },
-      { "quote": "“The group classes are absolute fire. I have more energy, more confidence, and my jeans fit better.”", "name": "ARJUN R." },
-      { "quote": "“Global feels like a community, not a membership. Best training decision I have made in Mumbai.”", "name": "MEERA S." }
+      {
+        "id": "testimonial-1",
+        "quote": "“Finally, a gym where I actually look forward to showing up. The coaches remember your name and your goals.”",
+        "name": "PRIYA K."
+      },
+      {
+        "id": "testimonial-2",
+        "quote": "“The group classes are absolute fire. I have more energy, more confidence, and my jeans fit better.”",
+        "name": "ARJUN R."
+      },
+      {
+        "id": "testimonial-3",
+        "quote": "“Global feels like a community, not a membership. Best training decision I have made in Mumbai.”",
+        "name": "MEERA S."
+      }
     ]
   },
   "contact": {
     "id": "contact",
     "eyebrow": "Get in touch",
-    "headline": ["Let's talk", "We're here"],
+    "headline": [
+      "Let's talk",
+      "We're here"
+    ],
     "intro": "Reach out in whatever way works best for you. We'll get back to you faster than you can say \"personal record.\"",
     "options": {
       "whatsapp": "WhatsApp",
@@ -120,9 +363,18 @@
       "title": "Send us a message",
       "action": "https://formspree.io/f/YOUR_FORM_ID",
       "fields": {
-        "name": { "label": "Your Name", "placeholder": "Your full name" },
-        "phone": { "label": "Phone Number", "placeholder": "Your phone number" },
-        "message": { "label": "Message", "placeholder": "Tell us what you're interested in..." }
+        "name": {
+          "label": "Your Name",
+          "placeholder": "Your full name"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "Your phone number"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Tell us what you're interested in..."
+        }
       },
       "submitLabel": "Send Message",
       "responseNote": "We typically respond within 2 hours during business hours."
@@ -134,7 +386,14 @@
     "findUsHeading": "Find us",
     "directionsLabel": "Get Directions",
     "mapTitleTemplate": "{name} location: {location}",
-    "socialLabels": { "instagram": "Instagram", "youtube": "YouTube", "whatsapp": "WhatsApp" }
+    "socialLabels": {
+      "instagram": "Instagram",
+      "youtube": "YouTube",
+      "whatsapp": "WhatsApp"
+    }
   },
-  "whatsappFloat": { "label": "Chat on WhatsApp", "text": "Let's talk" }
+  "whatsappFloat": {
+    "label": "Chat on WhatsApp",
+    "text": "Let's talk"
+  }
 }

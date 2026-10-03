@@ -1,6 +1,9 @@
-import { Nav, Hero, Marquee, About, Services, Gallery, Trainers, ContactUs, Testimonials, Footer, WhatsAppFloat } from '@/components/gym/sections'
+import { Site } from '@/components/gym/site'
+import { snapshotSchema } from '@/lib/content-schema'
 import content from '@/data/content.json'
+import gym from '@/data/gym.json'
+import media from '@/data/media.json'
 
 export default function Page() {
-  return <><Nav /><main id={content.navigation.mainId}><Hero /><Marquee /><About /><Services /><Gallery /><Trainers /><Testimonials /><ContactUs /></main><Footer /><WhatsAppFloat /></>
+  return <Site snapshot={snapshotSchema.parse({ content, gym, media })} />
 }
