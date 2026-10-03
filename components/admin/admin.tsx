@@ -20,6 +20,7 @@ export function Admin() {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null), [baseline, setBaseline] = useState(''), [revision, setRevision] = useState('')
   const [tab, setTab] = useState('Overview'), [error, setError] = useState(''), [issues, setIssues] = useState<Record<string, string>>({}), [busy, setBusy] = useState(false), [uploading, setUploading] = useState(false)
   const [status, setStatus] = useState<Status | null>(null), [records, setRecords] = useState<Revision[]>([]), [preview, setPreview] = useState(false), [mobile, setMobile] = useState(false)
+  const [localMode, setLocalMode] = useState(false)
   const [uploadTokens, setUploadTokens] = useState<Record<string, string>>({})
   const [uncertain, setUncertain] = useState(false)
   const pending = useRef<{ route: string; body: Record<string, unknown> } | null>(null), frame = useRef<HTMLIFrameElement>(null), previewDialog = useRef<HTMLDialogElement>(null)
@@ -35,9 +36,10 @@ export function Admin() {
     if (e instanceof ApiError && e.issues) setIssues(Object.fromEntries(e.issues.map(x => [x.path.replace(/^snapshot\./, ''), x.message])))
   }
   async function load() {
-    const data = await api<{ snapshot: Snapshot; revision: string }>('content')
+    const data = await api<{ snapshot: Snapshot; revision: string; mode?: string }>('content')
+    setLocalMode(data.mode === 'local')
     setSnapshot(data.snapshot); setBaseline(JSON.stringify(data.snapshot)); setRevision(data.revision); setIssues({})
-    setUploadTokens({}); setStatus({ state: 'saved', message: 'Content loaded from GitHub' })
+    setUploadTokens({}); setStatus({ state: 'saved', message: data.mode === 'local' ? 'Local website content loaded' : 'Content loaded from GitHub' })
   }
   useEffect(() => { void api<Login>('session').then(setAuth).catch(e => { if (!(e instanceof ApiError) || e.status !== 401) showError(e) }).finally(() => setChecking(false)) }, [])
   useEffect(() => { if (auth && !snapshot) void load().catch(showError) }, [auth])
@@ -60,7 +62,7 @@ export function Admin() {
     try {
       const result = await api<{ revision: string }>(pending.current.route, pending.current.body)
       const restored = pending.current.route === 'restore'
-      pending.current = null; setUncertain(false); setRevision(result.revision); setStatus({ state: 'saved', message: 'Saved. Cloudflare is rebuilding the website' })
+      pending.current = null; setUncertain(false); setRevision(result.revision); setStatus({ state: 'saved', message: localMode ? 'Saved locally. Refresh the website to see it.' : 'Saved. Cloudflare is rebuilding the website' })
       if (restored) await load(); else { setBaseline(JSON.stringify(snapshot)); setUploadTokens({}) }
     } catch (e) {
       if (e instanceof ApiError && [400, 409, 413, 415].includes(e.status)) { pending.current = null; setUncertain(false) }
@@ -84,7 +86,7 @@ export function Admin() {
       {error && <div role="alert" className="admin-error"><p>{error}</p>{Object.keys(issues).length > 0 && <ul>{Object.entries(issues).map(([path, message]) => <li key={path}>{path}: {message}</li>)}</ul>}{!uncertain && <button disabled={busy} onClick={() => { if (!dirty || confirm('Reload and discard unsaved changes?')) void load().then(() => setError('')).catch(showError) }}>Reload saved content</button>}</div>}
       {uncertain && !busy && <p className="admin-notice">The last save has not been confirmed. Use “Retry save” to check the same operation before making more edits.</p>}
       {!snapshot ? <p>Loading website content…</p> : <>
-        {tab === 'Overview' && <section className="admin-overview"><h2>Keep your gym up to date.</h2><p>Update the details members see, introduce a coach, or give the gallery a fresh look. Save changes when you are ready to put them on the website.</p><div className="admin-overview-links"><button onClick={() => setTab('Gym details')}>Edit gym details</button><button onClick={() => setTab('Media library')}>Manage photographs</button><button onClick={() => setTab('Trainers')}>Update the coaches</button></div><h3>Publication</h3><p role="status">{status?.message}</p><p className="admin-muted">Revision {revision.slice(0, 10)}</p><p>Each save commits the changes to GitHub. Cloudflare then rebuilds the website.</p></section>}
+        {tab === 'Overview' && <section className="admin-overview"><h2>Keep your gym up to date.</h2><p>Update the details members see, introduce a coach, or give the gallery a fresh look. Save changes when you are ready to put them on the website.</p><div className="admin-overview-links"><button onClick={() => setTab('Gym details')}>Edit gym details</button><button onClick={() => setTab('Media library')}>Manage photographs</button><button onClick={() => setTab('Trainers')}>Update the coaches</button></div><h3>Publication</h3><p role="status">{status?.message}</p><p className="admin-muted">Revision {revision.slice(0, 10)}</p><p>{localMode ? 'Local saves update this checkout immediately. Refresh the website tab after saving.' : 'Each save commits the changes to GitHub. Cloudflare then rebuilds the website.'}</p></section>}
         <fieldset className="admin-editor" disabled={lock}>
           {tab === 'Gym details' && <Fields value={snapshot.gym.gym as unknown as Value} template={defaults.gym.gym as unknown as Value} path="gym.gym" media={snapshot.media} uploadTokens={uploadTokens} issues={issues} onChange={v => setSnapshot({ ...snapshot, gym: { gym: v as Snapshot['gym']['gym'] } })} />}
           {contentKey && <Fields value={snapshot.content[contentKey] as unknown as Value} template={defaults.content[contentKey] as unknown as Value} path={`content.${contentKey}`} media={snapshot.media} uploadTokens={uploadTokens} issues={issues} onChange={v => setSnapshot({ ...snapshot, content: { ...snapshot.content, [contentKey]: v } })} />}

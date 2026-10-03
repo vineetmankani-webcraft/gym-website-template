@@ -9,7 +9,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "validate:content": "tsx scripts/validate-content.ts",
     "check:export": "tsx scripts/check-export.ts",
-    "dev:admin": "wrangler pages dev out --port 8788",
+    "dev:admin": "node scripts/run-local-admin.cjs",
     "test": "vitest run",
     "test:browser": "playwright test"
   },

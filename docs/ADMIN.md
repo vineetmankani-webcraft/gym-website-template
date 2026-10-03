@@ -2,24 +2,11 @@
 
 The website is served at `https://globalgym.com` and its editor is served by the same Cloudflare Pages project at `https://globalgym.com/admin`.
 
-The editor has one username and password. Saving creates a commit in the website's GitHub repository, and Cloudflare rebuilds the website. There is no database, GitHub App, or separate admin server.
+The editor has one username and password. Local testing writes directly to this checkout. On Cloudflare, saving creates a commit in the website's GitHub repository and Cloudflare rebuilds the website. There is no database, GitHub App, or separate admin server.
 
 ## Part 1: test this template locally
 
-### 1. Create a GitHub token
-
-In GitHub, open **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**.
-
-Configure it as follows:
-
-- Token name: `Global Gym website admin`
-- Repository access: **Only select repositories**
-- Repository: `VineetMankani/gym-website-template`
-- Repository permission: **Contents → Read and write**
-
-Generate the token and copy it. GitHub only shows it once.
-
-### 2. Create the local environment file
+### 1. Create the local environment file
 
 From the repository root, run:
 
@@ -32,29 +19,18 @@ Open `.env` and enter:
 ```text
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=choose-a-password-for-this-gym
-GITHUB_REPOSITORY=VineetMankani/gym-website-template
-GITHUB_TOKEN=github_pat_your_token
-CONTENT_BRANCH=feature/admin-portal
 NEXT_PUBLIC_SITE_URL=http://localhost:8788
 NEXT_PUBLIC_ADMIN_URL=http://localhost:8788/admin
 ```
 
 Do not commit `.env`. It is already ignored by Git.
 
-### 3. Push the test branch
+The GitHub values in `.env.example` are not needed for local editing. They are used by the deployed Cloudflare admin later.
 
-The branch must exist on GitHub because the editor writes through the GitHub API.
-
-```powershell
-git switch feature/admin-portal
-git push -u origin feature/admin-portal
-```
-
-### 4. Start the complete local website
+### 2. Start the complete local website
 
 ```powershell
 npm ci
-npm run build
 npm run dev:admin
 ```
 
@@ -67,9 +43,9 @@ http://localhost:8788/admin
 
 Use the username and password from `.env`.
 
-`npm run dev` is not sufficient for admin testing because it does not run the Cloudflare Pages Function.
+The first visit can take up to a minute while Next.js compiles the website on this Windows drive. Leave the command running. Later page loads and saves are much faster.
 
-### 5. Test a save
+### 3. Test a save
 
 1. Change the phone number.
 2. Upload or replace one photograph.
@@ -77,19 +53,21 @@ Use the username and password from `.env`.
 4. Hide one section.
 5. Select **Preview** and check the result.
 6. Select **Save changes**.
-7. Open GitHub and confirm that `feature/admin-portal` received an `Update website content` commit.
-8. Open **History** in the admin and restore the previous revision.
-9. Confirm that GitHub received the restore commit.
+7. Refresh `http://localhost:8788` and confirm the changes.
+8. Open **History** in the admin and restore the previous local revision if desired.
 
-The local public page does not rebuild automatically after an admin save. The admin commits through GitHub, so your local branch is now behind the remote branch. Stop the local server, synchronize, rebuild, and start it again:
+Local saves update `data/content.json`, `data/gym.json`, `data/media.json`, and uploaded files under `public/media`. Next.js notices those changes automatically. You do not need to pull, rebuild, or configure Cloudflare while testing locally.
+
+### 4. Keep or discard the local test
+
+Review the files changed by the admin:
 
 ```powershell
-git pull --ff-only
-npm run build
-npm run dev:admin
+git status --short
+git diff
 ```
 
-Refresh `http://localhost:8788` and verify the restored website. The Cloudflare preview in Part 2 will perform this rebuild automatically after every save.
+Commit the content when you want to keep it. Restore the changed content/media files with Git when you want to discard the local test.
 
 ## Part 2: create the Cloudflare preview
 
