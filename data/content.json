@@ -275,6 +275,14 @@
         "position": "center"
       },
       {
+        "id": "item-91896acb-6dc4-4653-83b1-e37d4a94731c",
+        "name": "Jay Shah",
+        "specialty": "Personal Training",
+        "src": "/media/gym-calisthenics.jpg",
+        "alt": "Coach portrait",
+        "position": "center"
+      },
+      {
         "id": "trainer-3",
         "name": "Vikram Singh",
         "specialty": "Performance Coach",
