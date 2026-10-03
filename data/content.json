@@ -9,6 +9,40 @@
     "logo": "",
     "favicon": "/icon.svg"
   },
+  "sections": [
+    {
+      "key": "hero",
+      "visible": true
+    },
+    {
+      "key": "marquee",
+      "visible": true
+    },
+    {
+      "key": "about",
+      "visible": true
+    },
+    {
+      "key": "services",
+      "visible": true
+    },
+    {
+      "key": "gallery",
+      "visible": true
+    },
+    {
+      "key": "trainers",
+      "visible": true
+    },
+    {
+      "key": "testimonials",
+      "visible": true
+    },
+    {
+      "key": "contact",
+      "visible": true
+    }
+  ],
   "navigation": {
     "mainId": "main",
     "links": [
@@ -53,6 +87,7 @@
   "hero": {
     "id": "top",
     "video": "/media/hero-training.mp4",
+    "poster": "/media/hero-gym.jpg",
     "headline": {
       "first": "SERIOUSLY",
       "accent": "FUN",
@@ -64,8 +99,7 @@
     "secondaryAction": {
       "label": "Explore Programs",
       "href": "#services"
-    },
-    "poster": "/media/hero-gym.jpg"
+    }
   },
   "marquee": {
     "items": [
@@ -127,40 +161,40 @@
     ],
     "items": [
       {
+        "id": "service-1",
         "icon": "strength",
         "title": "Strength Training",
-        "description": "Machines, free weights, and a plan that gets you stronger.",
-        "id": "service-1"
+        "description": "Machines, free weights, and a plan that gets you stronger."
       },
       {
+        "id": "service-2",
         "icon": "cardio",
         "title": "Cardio",
-        "description": "Build your engine with treadmills, cycles, and high-intensity conditioning.",
-        "id": "service-2"
+        "description": "Build your engine with treadmills, cycles, and high-intensity conditioning."
       },
       {
+        "id": "service-3",
         "icon": "classes",
         "title": "Group Classes",
-        "description": "Big energy, loud music, zero judgement. Find your people.",
-        "id": "service-3"
+        "description": "Big energy, loud music, zero judgement. Find your people."
       },
       {
+        "id": "service-4",
         "icon": "personal",
         "title": "Personal Training",
-        "description": "One-on-one coaching that makes every rep count.",
-        "id": "service-4"
+        "description": "One-on-one coaching that makes every rep count."
       },
       {
+        "id": "service-5",
         "icon": "zumba",
         "title": "Zumba",
-        "description": "Dance, sweat, and forget you are working out.",
-        "id": "service-5"
+        "description": "Dance, sweat, and forget you are working out."
       },
       {
+        "id": "service-6",
         "icon": "recovery",
         "title": "Spa & Recovery",
-        "description": "Reset hard with recovery zones built for your next session.",
-        "id": "service-6"
+        "description": "Reset hard with recovery zones built for your next session."
       }
     ]
   },
@@ -177,38 +211,38 @@
       {
         "src": "/media/hero-gym.jpg",
         "alt": "Members training in a Chandigarh gym",
-        "id": "photo-1",
-        "position": "center"
+        "position": "center",
+        "id": "photo-1"
       },
       {
         "src": "/media/gym-calisthenics.jpg",
         "alt": "Indian athlete doing a calisthenics hold",
-        "id": "photo-2",
-        "position": "center"
+        "position": "center",
+        "id": "photo-2"
       },
       {
         "src": "/media/gym-battle-ropes.jpg",
         "alt": "Indian member training with battle ropes",
-        "id": "photo-3",
-        "position": "center"
+        "position": "center",
+        "id": "photo-3"
       },
       {
         "src": "/media/gym-dumbbells-delhi.jpg",
         "alt": "Sikh member lifting dumbbells in a Delhi gym",
-        "id": "photo-4",
-        "position": "center"
+        "position": "center",
+        "id": "photo-4"
       },
       {
         "src": "/media/gym-training-kochi.jpg",
         "alt": "Young athlete preparing to train in a Kochi gym",
-        "id": "photo-5",
-        "position": "center"
+        "position": "center",
+        "id": "photo-5"
       },
       {
         "src": "/media/indian-gym-man.jpg",
         "alt": "Indian member working out with a dumbbell",
-        "id": "photo-6",
-        "position": "center"
+        "position": "center",
+        "id": "photo-6"
       }
     ]
   },
@@ -225,56 +259,57 @@
     "portraitAltTemplate": "Stock portrait representing {name}, {specialty}",
     "people": [
       {
+        "id": "trainer-1",
         "name": "Vineet Mankani",
         "specialty": "Strength & Conditioning",
         "src": "/media/gym-training-kochi.jpg",
-        "id": "trainer-1",
-        "position": "center",
-        "alt": "Stock portrait representing Vineet Mankani, Strength & Conditioning"
+        "alt": "Stock portrait representing Vineet Mankani, Strength & Conditioning",
+        "position": "center"
       },
       {
+        "id": "trainer-2",
         "name": "Anaya Shah",
         "specialty": "Functional Training",
         "src": "/media/about-powerlift.jpg",
-        "id": "trainer-2",
-        "position": "center",
-        "alt": "Stock portrait representing Anaya Shah, Functional Training"
+        "alt": "Stock portrait representing Anaya Shah, Functional Training",
+        "position": "center"
       },
       {
+        "id": "trainer-3",
         "name": "Vikram Singh",
         "specialty": "Performance Coach",
         "src": "/media/indian-gym-man.jpg",
-        "id": "trainer-3",
-        "position": "center",
-        "alt": "Stock portrait representing Vikram Singh, Performance Coach"
+        "alt": "Stock portrait representing Vikram Singh, Performance Coach",
+        "position": "center"
       },
       {
+        "id": "trainer-4",
         "name": "Nisha Patil",
         "specialty": "Zumba & Mobility",
         "src": "/media/coach-woman-barbell-goa.jpg",
-        "id": "trainer-4",
-        "position": "center",
-        "alt": "Stock portrait representing Nisha Patil, Zumba & Mobility"
+        "alt": "Stock portrait representing Nisha Patil, Zumba & Mobility",
+        "position": "center"
       },
       {
+        "id": "trainer-5",
         "name": "Arjun Mehta",
         "specialty": "Personal Training",
         "src": "/media/gym-dumbbells-delhi.jpg",
-        "id": "trainer-5",
-        "position": "center",
-        "alt": "Stock portrait representing Arjun Mehta, Personal Training"
+        "alt": "Stock portrait representing Arjun Mehta, Personal Training",
+        "position": "center"
       },
       {
+        "id": "trainer-6",
         "name": "Rohan Desai",
         "specialty": "Calisthenics & Conditioning",
         "src": "/media/gym-calisthenics.jpg",
-        "id": "trainer-6",
-        "position": "center",
-        "alt": "Stock portrait representing Rohan Desai, Calisthenics & Conditioning"
+        "alt": "Stock portrait representing Rohan Desai, Calisthenics & Conditioning",
+        "position": "center"
       }
     ]
   },
   "testimonials": {
+    "id": "testimonials",
     "eyebrow": "MEMBER ENERGY",
     "headline": [
       "GOOD VIBES",
@@ -283,22 +318,21 @@
     "attributionPrefix": "— ",
     "items": [
       {
+        "id": "testimonial-1",
         "quote": "“Finally, a gym where I actually look forward to showing up. The coaches remember your name and your goals.”",
-        "name": "PRIYA K.",
-        "id": "testimonial-1"
+        "name": "PRIYA K."
       },
       {
+        "id": "testimonial-2",
         "quote": "“The group classes are absolute fire. I have more energy, more confidence, and my jeans fit better.”",
-        "name": "ARJUN R.",
-        "id": "testimonial-2"
+        "name": "ARJUN R."
       },
       {
+        "id": "testimonial-3",
         "quote": "“Global feels like a community, not a membership. Best training decision I have made in Mumbai.”",
-        "name": "MEERA S.",
-        "id": "testimonial-3"
+        "name": "MEERA S."
       }
-    ],
-    "id": "testimonials"
+    ]
   },
   "contact": {
     "id": "contact",
@@ -353,39 +387,5 @@
   "whatsappFloat": {
     "label": "Chat on WhatsApp",
     "text": "Let's talk"
-  },
-  "sections": [
-    {
-      "key": "hero",
-      "visible": true
-    },
-    {
-      "key": "marquee",
-      "visible": true
-    },
-    {
-      "key": "about",
-      "visible": true
-    },
-    {
-      "key": "services",
-      "visible": true
-    },
-    {
-      "key": "gallery",
-      "visible": true
-    },
-    {
-      "key": "trainers",
-      "visible": true
-    },
-    {
-      "key": "testimonials",
-      "visible": true
-    },
-    {
-      "key": "contact",
-      "visible": true
-    }
-  ]
+  }
 }

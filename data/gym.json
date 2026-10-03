@@ -4,14 +4,14 @@
     "tagline": "Seriously fun fitness for Ghatkopar. Come for the workout, stay for the crew.",
     "location": "Ghatkopar, Mumbai",
     "address": {
-      "street": "2nd Floor, R City Mall",
-      "area": "Ghatkopar West",
+      "street": "2nd Floor, Platinum Mall",
+      "area": "Ghatkopar East",
       "city": "Mumbai",
       "postcode": "400086",
-      "formatted": "2nd Floor, R City Mall, Ghatkopar West, Mumbai 400086",
+      "formatted": "",
       "footerLines": [
-        "2nd Floor, R City Mall,",
-        "Ghatkopar West, Mumbai 400086"
+        "2nd Floor, Platinum Mall,",
+        "Ghatkopar East, Mumbai 400086"
       ]
     },
     "contact": {
