@@ -2,9 +2,9 @@
 
 ## Website admin
 
-The `/admin` portal manages website content and media through Cloudflare Pages Functions. Setup, local development, credentials, isolated previews, and release checks are documented in [docs/ADMIN.md](docs/ADMIN.md).
+The `/admin` portal manages website content and media through Cloudflare Pages Functions. Use the [new client setup runbook](docs/CLIENT_SETUP.md) for every client launch. Admin implementation notes and the original template setup are documented in [docs/ADMIN.md](docs/ADMIN.md).
 
-Use npm with `package-lock.json`: `npm ci`, `npm test`, and `npm run build`. The admin API needs Wrangler (`npm run dev:admin` after a build); `next dev` alone only runs the frontend.
+Use npm with `package-lock.json`: `npm ci`, `npm test`, and `npm run build`. Start the complete local website and local-writing admin with `npm run dev:admin`; no build is required first.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
 
