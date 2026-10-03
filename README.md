@@ -2,7 +2,7 @@
 
 ## Website admin
 
-The `/admin` portal manages website content and media through Cloudflare Pages Functions. Use the [new client setup runbook](docs/CLIENT_SETUP.md) for every client launch. Admin implementation notes and the original template setup are documented in [docs/ADMIN.md](docs/ADMIN.md).
+The `/admin` portal manages website content and media through Cloudflare Pages Functions. Use the [quick client checklist](docs/CLIENT_SETUP_QUICK.md) while launching a site, or the [detailed client setup runbook](docs/CLIENT_SETUP.md) when you need explanations. Admin implementation notes are in [docs/ADMIN.md](docs/ADMIN.md).
 
 Use npm with `package-lock.json`: `npm ci`, `npm test`, and `npm run build`. Start the complete local website and local-writing admin with `npm run dev:admin`; no build is required first.
 
