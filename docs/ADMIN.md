@@ -75,7 +75,7 @@ Commit the content when you want to keep it. Restore the changed content/media f
 
 In Cloudflare, open **Workers & Pages → Create application → Pages → Import an existing Git repository**.
 
-Select `VineetMankani/gym-website-template` and configure:
+Select `vineetmankani-webcraft/gym-website-template` and configure:
 
 - Production branch: `main`
 - Framework preset: **Next.js (Static HTML Export)**
@@ -94,7 +94,7 @@ Add:
 ```text
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=choose-a-preview-password
-GITHUB_REPOSITORY=VineetMankani/gym-website-template
+GITHUB_REPOSITORY=vineetmankani-webcraft/gym-website-template
 GITHUB_TOKEN=github_pat_your_token
 ```
 
@@ -128,7 +128,7 @@ In the same **Variables and Secrets** screen, select **Production** and add this
 ```text
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=choose-a-production-password
-GITHUB_REPOSITORY=VineetMankani/gym-website-template
+GITHUB_REPOSITORY=vineetmankani-webcraft/gym-website-template
 GITHUB_TOKEN=github_pat_your_token
 NEXT_PUBLIC_SITE_URL=https://globalgym.com
 NEXT_PUBLIC_ADMIN_URL=https://globalgym.com/admin
