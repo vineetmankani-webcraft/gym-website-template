@@ -1,27 +1,27 @@
 {
   "gym": {
-    "name": "Global Gym",
-    "tagline": "Seriously fun fitness for Mumbai. Come for the workout, stay for the crew.",
+    "name": "AISW India | Calisthenics",
+    "tagline": "India's 1st Calisthenics Brand",
     "location": "Ghatkopar, Mumbai",
     "address": {
-      "street": "2nd Floor, Platinum Mall",
+      "street": "Sudha Park Lane",
       "area": "Ghatkopar East",
       "city": "Mumbai",
       "postcode": "400077",
       "formatted": "",
       "footerLines": [
-        "2nd Floor, Platinum Mall,",
-        "Ghatkopar East, Mumbai 400086"
+        "Sudha Park Lane",
+        "Ghatkopar East, Mumbai 400077"
       ]
     },
     "contact": {
       "whatsapp": "+919876543211",
       "phone": "+919876543212",
-      "email": "hello@globalgym.com"
+      "email": "hello@youremail.com"
     },
     "social": {
-      "instagram": "https://instagram.com/globalgym",
-      "youtube": "https://youtube.com/globalgym"
+      "instagram": "https://instagram.com/",
+      "youtube": "https://youtube.com/"
     },
     "maps": {
       "directionsLink": "https://www.google.com/maps/search/?api=1&query=2nd%20Floor%2C%20R%20City%20Mall%2C%20Ghatkopar%20West%2C%20Mumbai%20400086",
@@ -31,6 +31,6 @@
     "bookTrial": {
       "message": "Hi! I'd like to book a free trial class."
     },
-    "copyright": "© 2026 Global Gym Ghatkopar. All rights reserved."
+    "copyright": "© 2026 FractionCode. All rights reserved."
   }
 }
